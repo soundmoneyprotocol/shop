@@ -1,262 +1,274 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Filter, LayoutGrid, List } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useCartStore } from '@/lib/cartStore';
 
-const CATEGORIES = ['All', 'Sneakers', 'Clothing', 'Art', 'Vintage', 'Collectibles', 'Music'];
-const PRICE_RANGES = [
-  { label: 'Under $25', min: 0, max: 2500 },
-  { label: '$25 - $50', min: 2500, max: 5000 },
-  { label: '$50 - $100', min: 5000, max: 10000 },
-  { label: 'Over $100', min: 10000, max: Infinity },
+const CATEGORIES = ['All', 'Sneakers', 'Apparel', 'Books', 'Vinyl', 'Collectibles'];
+const BRANDS = [
+  { id: 'bezy-brand', name: 'BEZY', link: '/brand/bezy' },
+  { id: 'stockx-brand', name: 'STOCKX', link: '/brand/stockx' },
+  { id: 'stadiumgoods-brand', name: 'StadiumGoods', link: '/brand/stadiumgoods' },
+  { id: 'yeezy-brand', name: 'YEEZY', link: '/brand/yeezy' },
+  { id: 'supreme-brand', name: 'SUPREME', link: '/brand/supreme' },
+  { id: 'sneakercred-brand', name: 'SneakerCred', link: '/brand/sneakercred' },
 ];
 
-// Mock products - replace with real data from Supabase
-const MOCK_PRODUCTS = [
-  {
-    id: '1',
-    title: 'Jordan 1 Retro High OG',
-    creator: 'SneakerKing',
-    price: 15999,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop',
-    category: 'Sneakers',
-    rating: 4.8,
-    stock: 5,
-  },
-  {
-    id: '2',
-    title: 'Limited Edition Vintage Tee',
-    creator: 'VintageVibe',
-    price: 4999,
-    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop',
-    category: 'Clothing',
-    rating: 4.5,
-    stock: 12,
-  },
-  {
-    id: '3',
-    title: 'Abstract Art Print',
-    creator: 'ArtCollector',
-    price: 7999,
-    image: 'https://images.unsplash.com/photo-1579783902614-e3fb5141b0cb?w=300&h=300&fit=crop',
-    category: 'Art',
-    rating: 4.9,
-    stock: 3,
-  },
-  {
-    id: '4',
-    title: 'Retro Vinyl Record',
-    creator: 'MusicLover',
-    price: 2999,
-    image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop',
-    category: 'Music',
-    rating: 4.6,
-    stock: 8,
-  },
-];
+interface Product {
+  id: string;
+  title: string;
+  price_usd: number;
+  image_url: string;
+  category: string;
+  rating: number;
+  stock: number;
+  creator_id: string;
+  review_count?: number;
+}
+
+interface Creator {
+  id: string;
+  name: string;
+}
 
 export default function Marketplace() {
+  const router = useRouter();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [creators, setCreators] = useState<Map<string, Creator>>(new Map());
+  const [creatorsList, setCreatorsList] = useState<Creator[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedPriceRange, setSelectedPriceRange] = useState<{ min: number; max: number } | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState('newest');
+  const [selectedCreator, setSelectedCreator] = useState('All');
+  const [error, setError] = useState<string | null>(null);
+  const addItem = useCartStore((state) => state.addItem);
 
-  const filteredProducts = MOCK_PRODUCTS.filter((product) => {
-    const matchesSearch =
-      product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.creator.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    const matchesPrice = !selectedPriceRange || (product.price >= selectedPriceRange.min && product.price <= selectedPriceRange.max);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    return matchesSearch && matchesCategory && matchesPrice;
-  });
+        const params = new URLSearchParams();
+        if (selectedCategory !== 'All') params.append('category', selectedCategory);
+        if (searchQuery) params.append('search', searchQuery);
+
+        const response = await fetch(`/api/products?${params.toString()}`);
+        if (!response.ok) throw new Error('Failed to fetch');
+
+        const data = await response.json();
+        const fetchedProducts = data.products || [];
+        setAllProducts(fetchedProducts);
+
+        let filtered = fetchedProducts;
+        if (selectedCreator !== 'All') {
+          filtered = fetchedProducts.filter((p: Product) => p.creator_id === selectedCreator);
+        }
+        setProducts(filtered);
+
+        const creatorIds = [...new Set(fetchedProducts.map((p: Product) => p.creator_id))];
+        const creatorMap = new Map<string, Creator>();
+        const creatorArr: Creator[] = [];
+
+        for (const creatorId of creatorIds) {
+          try {
+            const creatorRes = await fetch(`/api/creators/${creatorId}`);
+            if (creatorRes.ok) {
+              const creatorData = await creatorRes.json();
+              creatorMap.set(creatorId, creatorData);
+              creatorArr.push(creatorData);
+            }
+          } catch (err) {
+            console.error(`Failed to fetch creator ${creatorId}:`, err);
+          }
+        }
+
+        setCreators(creatorMap);
+        setCreatorsList(creatorArr.sort((a, b) => a.name.localeCompare(b.name)));
+      } catch (err) {
+        console.error('Error:', err);
+        setError('Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const timer = setTimeout(fetchProducts, 300);
+    return () => clearTimeout(timer);
+  }, [selectedCategory, searchQuery, selectedCreator]);
+
+  const handleAddToCart = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
+    const creatorName = creators.get(product.creator_id)?.name || 'Creator';
+    addItem({
+      id: product.id,
+      title: product.title,
+      price: product.price_usd,
+      image: product.image_url,
+      creatorName,
+      maxStock: product.stock,
+    });
+  };
+
+  const handleBrandChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+
+    const brand = BRANDS.find(b => b.id === value);
+    if (brand) {
+      router.push(brand.link);
+      return;
+    }
+
+    setSelectedCreator(value);
+  };
 
   return (
-    <main className="min-h-screen bg-dark py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          className="mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-4xl font-bold mb-2">Marketplace</h1>
-          <p className="text-slate-400">Discover products from creators worldwide</p>
-        </motion.div>
+    <main className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="border-b border-gray-200 py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-light text-gray-900 mb-6">SoundMoney Market</h1>
 
-        {/* Search and Filters */}
-        <motion.div
-          className="mb-8 space-y-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
+          {/* Search */}
+          <div className="relative max-w-2xl">
+            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search products, creators..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-base pl-12"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-gray-400"
             />
           </div>
-
-          {/* Category Filter */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {CATEGORIES.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
-                  selectedCategory === category
-                    ? 'bg-primary text-white'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          {/* Price Range and Sort */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex gap-2 flex-1 overflow-x-auto">
-              <button
-                onClick={() => setSelectedPriceRange(null)}
-                className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                  selectedPriceRange === null
-                    ? 'bg-primary text-white'
-                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                }`}
-              >
-                All Prices
-              </button>
-              {PRICE_RANGES.map((range) => (
-                <button
-                  key={range.label}
-                  onClick={() => setSelectedPriceRange(range)}
-                  className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                    selectedPriceRange?.label === range.label
-                      ? 'bg-primary text-white'
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                  }`}
-                >
-                  {range.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Sort and View Mode */}
-            <div className="flex gap-2">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="input-base py-2 px-3"
-              >
-                <option value="newest">Newest</option>
-                <option value="popular">Most Popular</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-              </select>
-
-              <div className="flex bg-slate-800 rounded-lg p-1 gap-1">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded transition-all ${
-                    viewMode === 'grid' ? 'bg-primary text-white' : 'text-slate-400'
-                  }`}
-                >
-                  <LayoutGrid size={20} />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 rounded transition-all ${
-                    viewMode === 'list' ? 'bg-primary text-white' : 'text-slate-400'
-                  }`}
-                >
-                  <List size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Results Count */}
-        <div className="mb-6 text-slate-400">
-          Showing {filteredProducts.length} products
         </div>
+      </div>
 
-        {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
-          <motion.div
-            className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6' : 'space-y-4'}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+      {/* Filters */}
+      <div className="border-b border-gray-200 py-4 px-4">
+        <div className="max-w-7xl mx-auto flex gap-4 flex-wrap items-center">
+          {/* Category Filter */}
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="text-sm border-none bg-transparent focus:outline-none text-gray-700 cursor-pointer font-medium"
           >
-            {filteredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-              >
-                <Link href={`/product/${product.id}`}>
-                  <div className={viewMode === 'grid' ? 'card-hover group' : 'card-hover flex gap-4'}>
-                    <div className={`relative overflow-hidden rounded-lg ${viewMode === 'grid' ? 'w-full h-48' : 'w-24 h-24 flex-shrink-0'}`}>
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute top-2 right-2 badge-primary">{product.category}</div>
-                    </div>
-
-                    <div className={viewMode === 'grid' ? 'mt-4' : 'flex-1 flex flex-col justify-between'}>
-                      <div>
-                        <h3 className="font-semibold text-sm sm:text-base line-clamp-2">{product.title}</h3>
-                        <p className="text-xs sm:text-sm text-slate-400 mt-1">{product.creator}</p>
-                      </div>
-
-                      <div className={viewMode === 'grid' ? 'mt-4' : ''}>
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="text-sm">★ {product.rating}</div>
-                          <div className="text-xs text-slate-400">({Math.floor(Math.random() * 200)} reviews)</div>
-                        </div>
-                        <div className="text-primary font-bold">${(product.price / 100).toFixed(2)}</div>
-                        {product.stock < 10 && <p className="text-xs text-orange-400 mt-1">Only {product.stock} left</p>}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
-          </motion.div>
-        ) : (
-          <motion.div
-            className="card text-center py-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+          </select>
+
+          {/* All Brands Dropdown */}
+          <select
+            value={selectedCreator}
+            onChange={handleBrandChange}
+            className="text-sm border-none bg-transparent focus:outline-none text-gray-700 cursor-pointer font-medium"
           >
-            <p className="text-slate-400 text-lg">No products found matching your filters</p>
+            <option value="All">All Brands</option>
+            <optgroup label="Featured Brands">
+              {BRANDS.map((brand) => (
+                <option key={brand.id} value={brand.id}>
+                  {brand.name}
+                </option>
+              ))}
+            </optgroup>
+            {creatorsList.length > 0 && (
+              <optgroup label="Creators">
+                {creatorsList.map((creator) => (
+                  <option key={creator.id} value={creator.id}>
+                    {creator.name}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+          </select>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {error && (
+          <div className="mb-8 p-4 border border-gray-300 bg-gray-50 text-gray-700 text-sm">
+            {error}
+          </div>
+        )}
+
+        {loading ? (
+          <div className="text-center py-20 text-gray-400 text-sm">Loading...</div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-gray-400 mb-4 text-sm">No products found</p>
             <button
               onClick={() => {
                 setSearchQuery('');
                 setSelectedCategory('All');
-                setSelectedPriceRange(null);
+                setSelectedCreator('All');
               }}
-              className="btn-primary mt-4"
+              className="text-sm border border-gray-300 px-4 py-2 hover:border-gray-400 bg-white text-gray-900"
             >
-              Clear Filters
+              Clear filters
             </button>
-          </motion.div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {products.map((product) => (
+              <div key={product.id} className="group">
+                <Link href={`/product/${product.id}`}>
+                  <div className="cursor-pointer">
+                    {/* Image */}
+                    <div className="aspect-square overflow-hidden bg-gray-100 mb-3 relative">
+                      <img
+                        src={product.image_url || 'https://via.placeholder.com/400x400?text=No+Image'}
+                        alt={product.title}
+                        className="w-full h-full object-cover group-hover:opacity-80 transition"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            'https://via.placeholder.com/400x400?text=No+Image';
+                        }}
+                      />
+                      {product.stock === 0 && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                          <span className="text-white text-xs font-semibold">Out of Stock</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <p className="text-xs text-gray-500 mb-1">
+                      {creators.get(product.creator_id)?.name || 'Creator'}
+                    </p>
+                    <h3 className="text-sm text-gray-900 mb-2 line-clamp-2 group-hover:underline">
+                      {product.title}
+                    </h3>
+                    <div className="flex justify-between items-baseline text-sm mb-3">
+                      <span className="font-semibold text-gray-900">
+                        ${(product.price_usd / 100).toFixed(2)}
+                      </span>
+                      {product.rating ? (
+                        <span className="text-gray-500 text-xs">★ {product.rating.toFixed(1)}</span>
+                      ) : (
+                        <span className="text-gray-400 text-xs">New</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Add to Cart Button */}
+                <button
+                  onClick={(e) => handleAddToCart(e, product)}
+                  disabled={product.stock === 0}
+                  className="w-full py-2 border border-gray-300 rounded text-sm font-medium text-gray-900 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white transition flex items-center justify-center gap-2"
+                >
+                  <ShoppingCart size={14} />
+                  Add
+                </button>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </main>
