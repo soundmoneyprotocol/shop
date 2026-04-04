@@ -1,0 +1,60 @@
+{
+  "name": "soundmoney-shopping",
+  "version": "1.0.0",
+  "description": "Creator marketplace for sneakers, clothing, collectibles, and art with DAO governance",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "hardhat:test": "cd hardhat && npx hardhat test",
+    "hardhat:compile": "cd hardhat && npx hardhat compile",
+    "hardhat:deploy:sepolia": "cd hardhat && npx hardhat run scripts/deploy.js --network sepolia",
+    "hardhat:deploy:skale": "cd hardhat && npx hardhat run scripts/deploy.js --network skaleTestnet",
+    "supabase:migrate": "supabase migration up",
+    "supabase:reset": "supabase db reset"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.0",
+    "@stripe/react-stripe-js": "^2.4.0",
+    "@stripe/stripe-js": "^3.0.0",
+    "@supabase/supabase-js": "^2.38.0",
+    "@types/node": "^20.10.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.27",
+    "axios": "^1.6.0",
+    "ethers": "^5.8.0",
+    "framer-motion": "^10.18.0",
+    "lucide-react": "^0.292.0",
+    "next": "^14.0.0",
+    "postcss": "^8.5.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.6.0",
+    "socket.io-client": "^4.7.0",
+    "stripe": "^14.0.0",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.3.0",
+    "web3modal": "^1.9.12",
+    "zustand": "^4.5.7"
+  },
+  "devDependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "dotenv": "^16.3.0",
+    "eslint": "^8.54.0",
+    "eslint-config-next": "^14.0.0",
+    "hardhat": "^2.19.0",
+    "hardhat-deploy": "^0.11.45",
+    "solc": "^0.8.10"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
