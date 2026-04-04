@@ -19,6 +19,11 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
+            <img
+              src="/sm-bw-logo.png"
+              alt="SoundMoney"
+              className="h-8 w-8 object-contain"
+            />
             <div className="text-lg font-semibold text-gray-900">SoundMoney</div>
           </Link>
 
