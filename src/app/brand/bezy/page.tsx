@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/lib/cartStore';
@@ -105,8 +106,14 @@ export default function BZYBrand() {
           </Link>
 
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-20 h-20 bg-gray-900 rounded flex items-center justify-center">
-              <span className="text-3xl font-bold text-white">B</span>
+            <div className="w-20 h-20 bg-black rounded flex items-center justify-center">
+              <Image
+                src="/BZ-Logo.png"
+                alt="BZY Logo"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+              />
             </div>
             <div>
               <h1 className="text-3xl font-light text-gray-900 mb-2">{BZY_BRAND.name}</h1>
@@ -130,7 +137,7 @@ export default function BZYBrand() {
 
       {/* Products */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-8">Featured Drops</h2>
+        <h2 className="text-2xl font-light text-gray-900 mb-8">Featured Drops</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {products.map((product) => (
