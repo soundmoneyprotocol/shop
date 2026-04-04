@@ -31,20 +31,20 @@ export const SneakerTicker: React.FC = () => {
   return (
     <div style={{ borderTop: '1.5px solid black', borderBottom: '1.5px solid black' }} className='bg-white'>
       <div className='max-w-full overflow-hidden'>
-        <div className='flex gap-12 px-6 py-3 animate-scroll whitespace-nowrap'>
+        <div className='flex gap-4 sm:gap-8 md:gap-12 px-2 sm:px-4 md:px-6 py-2 sm:py-3 animate-scroll whitespace-nowrap'>
           {/* Render twice for seamless loop */}
           {[...sneakers, ...sneakers].map((sneaker, index) => (
             <div
               key={`${sneaker.name}-${index}`}
-              className='flex items-center gap-4 flex-shrink-0 hover:opacity-100 opacity-80 transition'
+              className='flex items-center gap-2 sm:gap-4 flex-shrink-0 hover:opacity-100 opacity-80 transition'
             >
-              <div className='flex items-center gap-3'>
-                <span className='font-bold text-sm text-gray-900 min-w-[140px]'>{sneaker.name}</span>
+              <div className='flex items-center gap-2'>
+                <span className='font-bold text-xs sm:text-sm text-gray-900 min-w-[80px] sm:min-w-[140px]'>{sneaker.name}</span>
               </div>
-              <div className='flex items-center gap-6 text-xs'>
+              <div className='hidden sm:flex items-center gap-3 sm:gap-6 text-xs'>
                 {Object.entries(sneaker.platforms).map(([platform, price]) => (
                   <div key={platform} className='flex flex-col items-center'>
-                    <span className='text-gray-600 font-medium'>{platform}</span>
+                    <span className='text-gray-600 font-medium text-xs'>{platform}</span>
                     <span className='text-green-600 font-semibold'>${price.toFixed(2)}</span>
                   </div>
                 ))}
@@ -52,13 +52,13 @@ export const SneakerTicker: React.FC = () => {
               <div className='flex items-center gap-1'>
                 {sneaker.trend > 0 ? (
                   <>
-                    <TrendingUp className='w-4 h-4 text-green-600' />
-                    <span className='text-green-600 font-medium text-sm min-w-[45px]'>+{sneaker.trend.toFixed(1)}%</span>
+                    <TrendingUp className='w-3 h-3 sm:w-4 sm:h-4 text-green-600' />
+                    <span className='text-green-600 font-medium text-xs sm:text-sm min-w-[35px] sm:min-w-[45px]'>+{sneaker.trend.toFixed(1)}%</span>
                   </>
                 ) : (
                   <>
-                    <TrendingDown className='w-4 h-4 text-red-600' />
-                    <span className='text-red-600 font-medium text-sm min-w-[45px]'>{sneaker.trend.toFixed(1)}%</span>
+                    <TrendingDown className='w-3 h-3 sm:w-4 sm:h-4 text-red-600' />
+                    <span className='text-red-600 font-medium text-xs sm:text-sm min-w-[35px] sm:min-w-[45px]'>{sneaker.trend.toFixed(1)}%</span>
                   </>
                 )}
               </div>
