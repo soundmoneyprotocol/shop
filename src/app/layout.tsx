@@ -7,9 +7,6 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'SoundMoney Market - Creator Marketplace',
   description: 'Buy and sell sneakers, clothing, art, and collectibles from creators. Direct creator payouts with blockchain escrow.',
-  icons: {
-    icon: '/favicon.ico',
-  },
 };
 
 export default function RootLayout({
