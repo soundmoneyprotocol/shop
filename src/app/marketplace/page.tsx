@@ -245,7 +245,7 @@ export default function Marketplace() {
                       {product.title}
                     </h3>
                     <div className="flex justify-between items-baseline text-sm mb-3">
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-green-600">
                         ${(product.price_usd / 100).toFixed(2)}
                       </span>
                       {product.rating ? (
