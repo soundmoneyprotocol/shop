@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, ChevronDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, ChevronDown, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 interface MarketplacePrice {
@@ -39,6 +39,7 @@ export default function MarketplaceAnalytics() {
   const [selectedProduct, setSelectedProduct] = useState('JORDAN-001');
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d'>('7d');
   const [priceData, setPriceData] = useState<PriceData | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showProductDropdown, setShowProductDropdown] = useState(false);
   const [showTimeframeDropdown, setShowTimeframeDropdown] = useState(false);
@@ -49,25 +50,83 @@ export default function MarketplaceAnalytics() {
 
   const fetchPriceData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await fetch(
-        `/api/marketplace-prices?sku=${selectedProduct}&timeframe=${timeframe}`
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api"}/marketplace/prices?sku=${selectedProduct}&timeframe=${timeframe}`
       );
       const result = await response.json();
       if (result.success) {
         setPriceData(result.data);
+      } else {
+        setError(result.error || 'Failed to fetch price data');
       }
-    } catch (error) {
-      console.error('Failed to fetch price data:', error);
+    } catch (err) {
+      console.error('Failed to fetch price data:', err);
+      setError('Unable to connect to the marketplace data service. Please try again later.');
     }
     setLoading(false);
   };
 
-  if (!priceData) {
+  if (error) {
     return (
       <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <p className="text-gray-600">Loading...</p>
+          <motion.div className="mb-8 text-gray-600 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <Link href="/" className="hover:text-black transition">
+              Home
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-black">Marketplace Analytics</span>
+          </motion.div>
+
+          <motion.div
+            className="mb-12"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-4xl font-light mb-4 text-black">Marketplace Analytics</h1>
+            <p className="text-gray-600">Compare prices across GOAT, StockX, Grailed, eBay and more</p>
+          </motion.div>
+
+          <div className="p-6 border-2 border-orange-200 bg-orange-50 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-semibold text-orange-900 mb-1">Data Service Unavailable</h3>
+                <p className="text-orange-700 text-sm">{error}</p>
+                <button
+                  onClick={fetchPriceData}
+                  className="mt-3 px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded hover:bg-orange-700 transition"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!priceData || loading) {
+    return (
+      <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div className="mb-8 text-gray-600 text-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <Link href="/" className="hover:text-black transition">
+              Home
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-black">Marketplace Analytics</span>
+          </motion.div>
+          <div className="flex items-center justify-center py-20">
+            <div className="text-center">
+              <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-gray-600">Loading marketplace data...</p>
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -329,7 +388,7 @@ export default function MarketplaceAnalytics() {
           </div>
         </motion.div>
 
-        {/* Summary Stats */}
+        {/* Summary Stats with Advanced Metrics */}
         {priceData.summary && (
           <motion.div
             className="mb-12"
@@ -337,9 +396,9 @@ export default function MarketplaceAnalytics() {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-2xl font-light mb-8 text-black">Summary Statistics</h2>
+            <h2 className="text-2xl font-light mb-8 text-black">Advanced Analytics</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Object.entries(priceData.summary).map(([marketplace, stats]: [string, any]) => (
                 <motion.div key={marketplace} className="card" variants={itemVariants}>
                   <h3 className="text-lg font-bold text-black mb-4">{marketplace}</h3>
@@ -354,21 +413,47 @@ export default function MarketplaceAnalytics() {
 
                     <div>
                       <p className="text-xs text-gray-600 mb-1">Price Range</p>
-                      <p className="text-sm text-black">
-                        ${stats.minAsk?.toFixed(2) || 'N/A'} - ${stats.maxAsk?.toFixed(2) || 'N/A'}
+                      <p className="text-sm text-black font-mono">
+                        {stats.priceRange}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-xs text-gray-600 mb-1">Avg Sale Price</p>
+                      <p className="text-xs text-gray-600 mb-1">Price Volatility</p>
                       <p className="text-sm font-semibold text-black">
-                        ${stats.avgSalePrice ? stats.avgSalePrice.toFixed(2) : 'N/A'}
+                        ${stats.volatility ? stats.volatility.toFixed(2) : 'N/A'}
                       </p>
+                    </div>
+
+                    {/* Supply Trend */}
+                    <div className="pt-2 border-t border-gray-200">
+                      <p className="text-xs text-gray-600 mb-1">Supply Trend</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-black">
+                          {stats.supplyTrend >= 0 ? '+' : ''}{stats.supplyTrend}%
+                        </span>
+                        {stats.supplyDirection === 'up' && <TrendingUp size={14} className="text-red-600" />}
+                        {stats.supplyDirection === 'down' && <TrendingDown size={14} className="text-green-600" />}
+                        {stats.supplyDirection === 'stable' && <div className="w-1 h-1 bg-gray-400 rounded-full" />}
+                      </div>
+                    </div>
+
+                    {/* Demand Trend */}
+                    <div>
+                      <p className="text-xs text-gray-600 mb-1">Demand Trend</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-black">
+                          {stats.demandTrend >= 0 ? '+' : ''}{stats.demandTrend}%
+                        </span>
+                        {stats.demandDirection === 'up' && <TrendingUp size={14} className="text-green-600" />}
+                        {stats.demandDirection === 'down' && <TrendingDown size={14} className="text-red-600" />}
+                        {stats.demandDirection === 'stable' && <div className="w-1 h-1 bg-gray-400 rounded-full" />}
+                      </div>
                     </div>
 
                     <div className="pt-3 border-t border-gray-200">
                       <p className="text-xs text-gray-600">
-                        {stats.dataPoints} price points • Supply: {stats.totalSupply} • Demand: {stats.totalDemand}
+                        {stats.dataPoints} data points • Supply: {stats.totalSupply} • Demand: {stats.totalDemand}
                       </p>
                     </div>
                   </div>
@@ -377,6 +462,78 @@ export default function MarketplaceAnalytics() {
             </div>
           </motion.div>
         )}
+
+        {/* Market Sentiment Section */}
+        <motion.div
+          className="mb-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          <h3 className="text-lg font-bold text-blue-900 mb-3">Market Sentiment Analysis</h3>
+          <p className="text-sm text-blue-700 mb-3">
+            Advanced AI sentiment analysis powered by Groq enables real-time market emotion tracking. Analyze buyer/seller sentiment across all platforms to predict price movements and identify emerging trends.
+          </p>
+          {priceData.sentiment ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Buyer Sentiment</p>
+                <p className={`text-sm font-bold ${
+                  priceData.sentiment.buyerSentiment.label.includes('Bullish') ? 'text-green-600' : 
+                  priceData.sentiment.buyerSentiment.label.includes('Bearish') ? 'text-red-600' : 'text-orange-600'
+                }`}>
+                  {priceData.sentiment.buyerSentiment.label} {priceData.sentiment.buyerSentiment.trend}
+                </p>
+              </div>
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Seller Sentiment</p>
+                <p className={`text-sm font-bold ${
+                  priceData.sentiment.sellerSentiment.label.includes('Bullish') ? 'text-green-600' : 
+                  priceData.sentiment.sellerSentiment.label.includes('Bearish') ? 'text-red-600' : 'text-orange-600'
+                }`}>
+                  {priceData.sentiment.sellerSentiment.label} {priceData.sentiment.sellerSentiment.trend}
+                </p>
+              </div>
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Market Momentum</p>
+                <p className={`text-sm font-bold ${
+                  priceData.sentiment.marketMomentum.direction === 'bullish' ? 'text-green-600' : 
+                  priceData.sentiment.marketMomentum.direction === 'bearish' ? 'text-red-600' : 'text-blue-600'
+                }`}>
+                  {priceData.sentiment.marketMomentum.label}
+                </p>
+              </div>
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Price Prediction</p>
+                <p className={`text-sm font-bold ${
+                  priceData.sentiment.pricePrediction.direction === 'up' ? 'text-green-600' : 
+                  priceData.sentiment.pricePrediction.direction === 'down' ? 'text-red-600' : 'text-blue-600'
+                }`}>
+                  {priceData.sentiment.pricePrediction.estimatedRange}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Buyer Sentiment</p>
+                <p className="text-sm font-bold text-green-600">Analyzing...</p>
+              </div>
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Seller Sentiment</p>
+                <p className="text-sm font-bold text-orange-600">Analyzing...</p>
+              </div>
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Market Momentum</p>
+                <p className="text-sm font-bold text-blue-600">Analyzing...</p>
+              </div>
+              <div className="bg-white rounded p-3">
+                <p className="text-xs text-gray-600 mb-1">Price Prediction</p>
+                <p className="text-sm font-bold text-purple-600">Calculating...</p>
+              </div>
+            </div>
+          )}
+        </motion.div>
 
         {/* Info Box */}
         <motion.div
@@ -387,10 +544,9 @@ export default function MarketplaceAnalytics() {
         >
           <h3 className="font-semibold text-black mb-3">About This Data</h3>
           <p className="text-gray-700 text-sm leading-relaxed">
-            Price data is collected hourly from major marketplaces including GOAT, StockX, Grailed, and eBay.
-            Prices shown represent the lowest asking price (Ask) for each marketplace. Supply indicates
-            the number of active listings, while demand represents buyer interest. This data helps you
-            understand market trends and set competitive prices for your artist merchandise.
+            Price data is collected hourly from major marketplaces including GOAT, StockX, Grailed, eBay, Stadium Goods, and KLEKT.
+            Prices shown represent the lowest asking price (Ask) for each marketplace. Supply and demand metrics show real-time market activity.
+            Price volatility measures price stability, while supply/demand trends show market direction. This data helps you understand market dynamics and set competitive pricing for your merchandise.
           </p>
         </motion.div>
       </div>
