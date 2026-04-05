@@ -143,13 +143,6 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="lg:hidden pb-4 space-y-3 border-t border-gray-300 pt-4 ">
             <Link
-              href="/marketplace-analytics"
-              onClick={closeMenu}
-              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
-            >
-              Analytics
-            </Link>
-            <Link
               href="/about"
               onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
@@ -157,11 +150,11 @@ export default function Navigation() {
               About Us
             </Link>
             <Link
-              href="/marketplace"
+              href="/marketplace-analytics"
               onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
-              Browse Products
+              Analytics
             </Link>
             <Link
               href="/seller/dashboard"
@@ -169,6 +162,13 @@ export default function Navigation() {
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Auctions
+            </Link>
+            <Link
+              href="/marketplace"
+              onClick={closeMenu}
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            >
+              Browse Products
             </Link>
             <Link
               href="/seller/dashboard"
