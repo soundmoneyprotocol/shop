@@ -155,7 +155,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                 </button>
               </div>
               <div className="absolute bottom-4 left-4 flex gap-2">
-                {product.badges.map((badge, i) => (
+                {product.badges.map((badge: string, i: number) => (
                   <span key={i} className="badge badge-primary text-xs">
                     {badge}
                   </span>
