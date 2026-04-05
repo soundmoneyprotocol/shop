@@ -27,6 +27,10 @@ export default function Navigation() {
     }
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -137,40 +141,48 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 space-y-3 border-t border-gray-300 pt-4">
+          <div className="md:hidden pb-4 space-y-3 border-t border-gray-300 pt-4 ">
             <Link
               href="/marketplace-analytics"
+              onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Analytics
             </Link>
             <Link
               href="/about"
+              onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               About Us
             </Link>
             <Link
               href="/marketplace"
+              onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Browse Products
             </Link>
             <Link
               href="/seller/dashboard"
+              onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Auctions
             </Link>
             <Link
               href="/seller/dashboard"
+              onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Sell on SoundMoney
             </Link>
             {!isConnected && (
               <button
-                onClick={connect}
+                onClick={() => {
+                  connect();
+                  closeMenu();
+                }}
                 className="w-full px-4 py-2 bg-green-600 text-white font-semibold hover:bg-green-700 transition rounded-lg"
               >
                 Connect Wallet
@@ -178,7 +190,10 @@ export default function Navigation() {
             )}
             {user ? (
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                  handleLogout();
+                  closeMenu();
+                }}
                 className="w-full px-4 py-2 bg-red-600 text-white font-semibold hover:bg-red-700 transition rounded-lg flex items-center justify-center gap-2"
               >
                 <LogOut size={16} />
@@ -188,12 +203,14 @@ export default function Navigation() {
               <div className="space-y-2">
                 <Link
                   href="/login"
+                  onClick={closeMenu}
                   className="block px-4 py-2 bg-gray-200 text-black font-semibold hover:bg-gray-300 transition rounded-lg text-center"
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
+                  onClick={closeMenu}
                   className="block px-4 py-2 border-2 border-black text-black font-semibold hover:bg-black hover:text-white transition rounded-lg text-center"
                 >
                   Sign Up
