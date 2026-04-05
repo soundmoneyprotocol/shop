@@ -39,8 +39,8 @@ export default function Home() {
     },
     {
       icon: Shield,
-      title: 'Authenticity NFTs',
-      description: 'Mint NFTs for each product to verify ownership and authenticity',
+      title: 'Authenticity Badges',
+      description: 'Mint Badges for each product to verify ownership and authenticity',
     },
     {
       icon: Zap,
