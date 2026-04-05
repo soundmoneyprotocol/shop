@@ -85,8 +85,8 @@ export default function SellerSettings() {
             >
               <div className="bg-white border-0 p-8 rounded-2xl">
                 <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 border-2 border-black rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="w-8 h-8 text-black" />
+                  <div className="w-14 h-14 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Check className="w-8 h-8 text-white" />
                   </div>
                   <div className="flex-1">
                     <h2 className="text-2xl font-bold text-black mb-2">Verified Seller</h2>
