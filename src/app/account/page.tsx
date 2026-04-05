@@ -10,6 +10,7 @@ import {
   CreditCard,
   DollarSign,
   ChevronRight,
+  ArrowDown,
   Settings,
   LogOut,
   Plus,
