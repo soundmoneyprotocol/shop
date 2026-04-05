@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -52,8 +52,8 @@ export default function SellerSettings() {
   };
 
   return (
-    <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <main className="min-h-screen bg-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto w-full">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -61,15 +61,13 @@ export default function SellerSettings() {
           transition={{ duration: 0.6 }}
         >
           <div className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <Link href="/seller/dashboard" className="text-gray-600 hover:text-black transition">
-                Dashboard
+            <div className="mb-4">
+              <Link href="/seller/dashboard" className="text-sm text-gray-600 hover:text-black transition">
+                ← Back to Auctions
               </Link>
-              <ChevronRight size={18} className="text-gray-400" />
-              <span className="text-black font-semibold">Settings</span>
             </div>
-            <h1 className="text-4xl font-light mb-2">Seller Settings</h1>
-            <p className="text-gray-600">Manage your store and account information</p>
+            <h1 className="text-3xl sm:text-4xl font-light mb-2">Seller Settings</h1>
+            <p className="text-sm sm:text-base text-gray-600">Manage your store and account information</p>
           </div>
         </motion.div>
 
@@ -83,32 +81,32 @@ export default function SellerSettings() {
             <motion.div
               variants={itemVariants}
             >
-              <div className="bg-white border-0 p-8 rounded-2xl">
-                <div className="flex items-start gap-4">
+              <div className="bg-white border border-gray-200 p-6 sm:p-8 rounded-2xl">
+                <div className="flex flex-col sm:flex-row items-start gap-4">
                   <div className="w-14 h-14 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Check className="w-8 h-8 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-black mb-2">Verified Seller</h2>
-                    <p className="text-gray-600 mb-4">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-xl sm:text-2xl font-bold text-black mb-2">Verified Seller</h2>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4">
                       Your account is verified and in good standing. You can sell unlimited items and have access to all seller features.
                     </p>
                     <div className="space-y-2 text-sm text-gray-700">
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✓</span>
+                        <span className="text-green-600 flex-shrink-0">✓</span>
                         <span>Identity verified</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✓</span>
+                        <span className="text-green-600 flex-shrink-0">✓</span>
                         <span>Email verified</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✓</span>
+                        <span className="text-green-600 flex-shrink-0">✓</span>
                         <span>Payment method confirmed</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✓</span>
-                        <span>Seller rating: {MOCK_SELLER.rating} stars ({MOCK_SELLER.reviews} reviews)</span>
+                        <span className="text-green-600 flex-shrink-0">✓</span>
+                        <span className="break-words">Seller rating: {MOCK_SELLER.rating} stars ({MOCK_SELLER.reviews} reviews)</span>
                       </div>
                     </div>
                   </div>
@@ -120,9 +118,9 @@ export default function SellerSettings() {
             <motion.div
               variants={itemVariants}
             >
-              <form onSubmit={handleSave} className="bg-white border-0 p-8 rounded-2xl space-y-6">
+              <form onSubmit={handleSave} className="bg-white border border-gray-200 p-6 sm:p-8 rounded-2xl space-y-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-black mb-6">Store Information</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-black mb-6">Store Information</h2>
                 </div>
 
                 {/* Store Name */}
@@ -151,7 +149,7 @@ export default function SellerSettings() {
                 </div>
 
                 {/* Contact Information */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm font-semibold text-gray-700 mb-2 block">Phone</label>
                     <input
@@ -185,19 +183,19 @@ export default function SellerSettings() {
             <motion.div
               variants={itemVariants}
             >
-              <div className="bg-white border-0 p-8 rounded-2xl space-y-4">
-                <h2 className="text-2xl font-bold text-black mb-6">Account Information</h2>
+              <div className="bg-white border border-gray-200 p-6 sm:p-8 rounded-2xl space-y-4">
+                <h2 className="text-xl sm:text-2xl font-bold text-black mb-6">Account Information</h2>
                 <div>
                   <p className="text-xs text-gray-600 font-semibold mb-1">Name</p>
-                  <p className="text-black font-semibold">{MOCK_SELLER.name}</p>
+                  <p className="text-sm sm:text-base text-black font-semibold">{MOCK_SELLER.name}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-600 font-semibold mb-1">Email</p>
-                  <p className="text-black font-semibold">{MOCK_SELLER.email}</p>
+                  <p className="text-sm sm:text-base text-black font-semibold break-all">{MOCK_SELLER.email}</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-600 font-semibold mb-1">Member Since</p>
-                  <p className="text-black font-semibold">{MOCK_SELLER.joinedDate}</p>
+                  <p className="text-sm sm:text-base text-black font-semibold">{MOCK_SELLER.joinedDate}</p>
                 </div>
               </div>
             </motion.div>

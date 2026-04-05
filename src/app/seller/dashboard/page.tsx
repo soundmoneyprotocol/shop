@@ -291,7 +291,7 @@ export default function SellerDashboard() {
                 {products.map((product) => (
                   <motion.div
                     key={product.id}
-                    className="card flex items-center justify-between hover:border-green-600 transition"
+                    className="card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 hover:border-green-600 transition"
                     whileHover={{ y: -2 }}
                   >
                     <div className="flex items-center gap-4 flex-1">
@@ -302,7 +302,7 @@ export default function SellerDashboard() {
                       />
                       <div className="flex-1">
                         <h3 className="font-bold text-lg mb-2 text-black">{product.title}</h3>
-                        <div className="flex items-center gap-4 text-sm">
+                        <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
                           <span className="text-green-600 font-semibold">${(product.price / 100).toFixed(2)}</span>
                           <span className="text-gray-600">
                             Stock: <span className="font-semibold text-black">{product.stock}</span>
@@ -318,7 +318,7 @@ export default function SellerDashboard() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                       <button
                         title="View"
                         className="p-2 hover:bg-gray-200 transition"
