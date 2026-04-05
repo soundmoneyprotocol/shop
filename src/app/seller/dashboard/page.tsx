@@ -165,7 +165,6 @@ export default function SellerDashboard() {
                   <div className="flex items-center gap-3 mt-1">
                     {MOCK_SELLER.verified && <span className="badge badge-success text-xs">Verified Seller</span>}
                     <span className="flex items-center gap-1 text-sm text-gray-600">
-                      <span>★</span>
                       {MOCK_SELLER.rating} ({MOCK_SELLER.reviews} reviews)
                     </span>
                   </div>
@@ -267,7 +266,7 @@ export default function SellerDashboard() {
                     </div>
                     <div className="text-right">
                       <p className={`font-semibold ${activity.type === 'sale' ? 'text-green-600' : 'text-black'}`}>
-                        {activity.type === 'sale' ? `+$${activity.amount}` : `★${activity.rating}`}
+                        {activity.type === 'sale' ? `+$${activity.amount}` : `${activity.rating} rating`}
                       </p>
                       <p className="text-sm text-gray-600">{activity.time}</p>
                     </div>
@@ -310,8 +309,7 @@ export default function SellerDashboard() {
                           <span className="text-gray-600">
                             Sold: <span className="font-semibold text-black">{product.sold}</span>
                           </span>
-                          <span className="flex items-center gap-1 text-gray-600">
-                            <span>★</span>
+                          <span className="text-gray-600">
                             {product.rating} ({product.reviews})
                           </span>
                         </div>
