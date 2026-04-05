@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 interface User {
   id: string;
@@ -20,10 +20,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Lazy initialize Supabase client only on client side
-let supabaseClient: ReturnType<typeof createClient> | null = null;
+let supabaseClient: SupabaseClient | null = null;
 
-function getSupabaseClient() {
+function initializeSupabase() {
   if (!supabaseClient && typeof window !== 'undefined') {
     supabaseClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -36,73 +35,86 @@ function getSupabaseClient() {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null);
 
   useEffect(() => {
-    // Initialize Supabase client on mount (client side only)
-    supabaseRef.current = getSupabaseClient();
-    const supabase = supabaseRef.current;
+    const supabase = initializeSupabase();
 
     if (!supabase) {
       setLoading(false);
       return;
     }
 
-    // Check if user is already logged in
+    let mounted = true;
+
     const checkAuth = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
+        if (!mounted) return;
+
         if (data.session?.user) {
-          // Fetch buyer profile to get additional info
           const { data: buyer } = await supabase
             .from('buyers')
             .select('*')
             .eq('email', data.session.user.email)
             .single();
 
-          setUser({
-            id: data.session.user.id,
-            email: data.session.user.email!,
-            firstName: buyer?.first_name,
-            lastName: buyer?.last_name,
-          });
+          if (mounted) {
+            setUser({
+              id: data.session.user.id,
+              email: data.session.user.email!,
+              firstName: buyer?.first_name,
+              lastName: buyer?.last_name,
+            });
+          }
         }
       } catch (error) {
         console.error('Auth check error:', error);
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     checkAuth();
 
-    // Listen for auth changes
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const { data: buyer } = await supabase
-          .from('buyers')
-          .select('*')
-          .eq('email', session.user.email)
-          .single();
+      if (!mounted) return;
 
-        setUser({
-          id: session.user.id,
-          email: session.user.email!,
-          firstName: buyer?.first_name,
-          lastName: buyer?.last_name,
-        });
+      if (session?.user) {
+        try {
+          const { data: buyer } = await supabase
+            .from('buyers')
+            .select('*')
+            .eq('email', session.user.email)
+            .single();
+
+          if (mounted) {
+            setUser({
+              id: session.user.id,
+              email: session.user.email!,
+              firstName: buyer?.first_name,
+              lastName: buyer?.last_name,
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching buyer profile:', error);
+        }
       } else {
-        setUser(null);
+        if (mounted) {
+          setUser(null);
+        }
       }
     });
 
     return () => {
+      mounted = false;
       authListener?.subscription.unsubscribe();
     };
   }, []);
 
   const login = async (email: string, password: string) => {
-    const supabase = getSupabaseClient();
+    const supabase = initializeSupabase();
     if (!supabase) throw new Error('Supabase client not initialized');
 
     const { error } = await supabase.auth.signInWithPassword({
@@ -114,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
-    const supabase = getSupabaseClient();
+    const supabase = initializeSupabase();
     if (!supabase) throw new Error('Supabase client not initialized');
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -124,7 +136,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (authError) throw authError;
 
-    // Create buyer profile
     if (authData.user) {
       await supabase.from('buyers').insert({
         email,
@@ -136,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    const supabase = getSupabaseClient();
+    const supabase = initializeSupabase();
     if (!supabase) throw new Error('Supabase client not initialized');
 
     const { error } = await supabase.auth.signOut();
