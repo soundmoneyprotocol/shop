@@ -141,7 +141,7 @@ export default function SellerDashboard() {
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-light mb-2">Seller Dashboard</h1>
+              <h1 className="text-4xl font-light mb-2">Seller Auctions</h1>
               <p className="text-gray-600">Manage your products and track sales</p>
             </div>
             <button

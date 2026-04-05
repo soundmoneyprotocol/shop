@@ -90,7 +90,7 @@ export default function Navigation() {
                       href="/seller/dashboard"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
                     >
-                      Dashboard
+                      Auctions
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -155,6 +155,12 @@ export default function Navigation() {
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Browse Products
+            </Link>
+            <Link
+              href="/seller/dashboard"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            >
+              Auctions
             </Link>
             <Link
               href="/seller/dashboard"
