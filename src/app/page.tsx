@@ -35,7 +35,7 @@ export default function Home() {
     {
       icon: Users,
       title: 'x402 Agentic Payments',
-      description: 'Keep 86-89% of revenue. No middlemen, just blockchain escrow',
+      description: 'Keep 86-89% of revenue. No middlemen, instant settlements',
     },
     {
       icon: Shield,
