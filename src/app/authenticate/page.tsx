@@ -162,6 +162,7 @@ export default function AuthenticatePage() {
                     { number: 1, title: 'Photo Verification', desc: 'Submit clear photos from multiple angles' },
                     { number: 2, title: 'Serial Number Check', desc: 'Verify authenticity markers and serial numbers' },
                     { number: 3, title: 'Ownership Proof', desc: 'Provide receipt or proof of purchase' },
+                    { number: 4, title: 'Provenance', desc: 'Document the item\'s ownership history and origin' },
                   ].map((step, i) => (
                     <div key={i} className="p-6 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
                       <div className="flex items-start gap-4">
