@@ -14,7 +14,8 @@
     "hardhat:deploy:sepolia": "cd hardhat && npx hardhat run scripts/deploy.js --network sepolia",
     "hardhat:deploy:skale": "cd hardhat && npx hardhat run scripts/deploy.js --network skaleTestnet",
     "supabase:migrate": "supabase migration up",
-    "supabase:reset": "supabase db reset"
+    "supabase:reset": "supabase db reset",
+    "upload-shoe-layers": "node scripts/upload-shoe-layers.js"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.0",
