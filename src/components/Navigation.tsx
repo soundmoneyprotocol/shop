@@ -107,7 +107,7 @@ export default function Navigation() {
                 <Link href="/login" className="text-gray-700 hover:text-black transition font-semibold text-sm">
                   Login
                 </Link>
-                <Link href="/signup" className="px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition">
+                <Link href="/signup" className="px-4 py-2 border-2 border-black text-black text-sm font-semibold rounded-lg hover:bg-black hover:text-white transition">
                   Sign Up
                 </Link>
               </div>
@@ -188,7 +188,7 @@ export default function Navigation() {
                 </Link>
                 <Link
                   href="/signup"
-                  className="block px-4 py-2 bg-black text-white font-semibold hover:bg-gray-800 transition rounded-lg text-center"
+                  className="block px-4 py-2 border-2 border-black text-black font-semibold hover:bg-black hover:text-white transition rounded-lg text-center"
                 >
                   Sign Up
                 </Link>

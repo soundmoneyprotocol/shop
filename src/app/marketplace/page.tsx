@@ -48,8 +48,8 @@ const MOCK_PRODUCTS = [
   },
   {
     id: '3',
-    title: 'Abstract Art Print',
-    creator: 'ArtCollector',
+    title: 'Abstract Mixtape',
+    creator: 'Cassette Tape Collector',
     brand: 'BEZY',
     price: 7999,
     image: 'https://images.unsplash.com/photo-1579783902614-e3fb5141b0cb?w=300&h=300&fit=crop',
