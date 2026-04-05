@@ -33,7 +33,7 @@ const PRODUCTS = [
   { sku: 'YEEZY-350', name: 'Yeezy 350 Boost', brand: 'Adidas' },
 ];
 
-const MARKETPLACES = ['GOAT', 'StockX', 'Grailed', 'eBay'];
+const MARKETPLACES = ['GOAT', 'StockX', 'Grailed', 'eBay', 'StadiumGoods', 'KLEKT'];
 
 export default function MarketplaceAnalytics() {
   const [selectedProduct, setSelectedProduct] = useState('JORDAN-001');
