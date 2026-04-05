@@ -46,7 +46,7 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-8">
             <Link href="/marketplace" className="text-gray-700 hover:text-black transition">
               Browse
             </Link>
@@ -67,13 +67,13 @@ export default function Navigation() {
             {!isConnected ? (
               <button
                 onClick={connect}
-                className="hidden md:flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 transition text-sm font-semibold text-white rounded-lg"
+                className="hidden lg:flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 transition text-sm font-semibold text-white rounded-lg"
               >
                 <Wallet size={18} />
                 Connect Wallet
               </button>
             ) : (
-              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-lg">
+              <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-lg">
                 <Wallet size={18} />
                 {address?.substring(0, 6)}...{address?.substring(-4)}
               </div>
@@ -84,7 +84,7 @@ export default function Navigation() {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="hidden md:flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition"
+                  className="hidden lg:flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition"
                 >
                   {user.firstName || 'Account'}
                 </button>
@@ -107,7 +107,7 @@ export default function Navigation() {
                 )}
               </div>
             ) : (
-              <div className="hidden md:flex items-center gap-2">
+              <div className="hidden lg:flex items-center gap-2">
                 <Link href="/login" className="text-gray-700 hover:text-black transition font-semibold text-sm">
                   Login
                 </Link>
@@ -132,7 +132,7 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 transition"
+              className="lg:hidden p-2 hover:bg-gray-100 transition"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -141,7 +141,7 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 space-y-3 border-t border-gray-300 pt-4 ">
+          <div className="lg:hidden pb-4 space-y-3 border-t border-gray-300 pt-4 ">
             <Link
               href="/marketplace-analytics"
               onClick={closeMenu}
