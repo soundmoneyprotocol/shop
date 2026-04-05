@@ -34,7 +34,7 @@ export default function Home() {
     },
     {
       icon: Users,
-      title: 'Direct Creator Payouts',
+      title: 'x402 Agentic Payments',
       description: 'Keep 86-89% of revenue. No middlemen, just blockchain escrow',
     },
     {
