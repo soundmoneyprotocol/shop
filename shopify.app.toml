@@ -1,0 +1,35 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "b0cdef30a61d2693817f1568cd6cd98b"
+name = "soundmoneyshop"
+handle = "soundmoneyshop"
+application_url = "https://personally-aids-framework-mentor.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "solarahsessentials.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+# Scopes for SoundMoney merchant import:
+# - read_products: Import product data
+# - read_inventory: Check stock levels  
+# - read_orders: View order history (optional)
+scopes = "read_products,read_inventory,read_orders,write_products"
+
+[auth]
+redirect_urls = [
+  "https://personally-aids-framework-mentor.trycloudflare.com/auth/callback",
+  "https://personally-aids-framework-mentor.trycloudflare.com/auth/shopify/callback",
+  "https://personally-aids-framework-mentor.trycloudflare.com/api/auth/callback",
+  "https://api.soundmoneyprotocol.xyz/api/shopify/callback",
+  "http://localhost:3000/api/shopify/callback"
+]
+
+[webhooks]
+api_version = "2025-07"
+
+[pos]
+embedded = false

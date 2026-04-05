@@ -20,9 +20,24 @@ export default function ConnectShopifyPage() {
   const [stores, setStores] = useState<ShopifyStore[]>([]);
   const [loadingStores, setLoadingStores] = useState(true);
 
-  // Load connected stores on mount
+  // Load connected stores on mount and handle OAuth callback
   useEffect(() => {
     fetchConnectedStores();
+    
+    // Check for OAuth callback parameters
+    const params = new URLSearchParams(window.location.search);
+    const authorized = params.get('authorized');
+    const callbackError = params.get('error');
+    const shopName = params.get('shop');
+
+    if (authorized === 'true' && shopName) {
+      setSuccess(`Successfully authorized ${shopName}. You can now sync products.`);
+      // Clear URL parameters
+      window.history.replaceState({}, document.title, '/seller/connect-shopify');
+    } else if (callbackError) {
+      setError(callbackError);
+      window.history.replaceState({}, document.title, '/seller/connect-shopify');
+    }
   }, []);
 
   const fetchConnectedStores = async () => {
@@ -57,13 +72,25 @@ export default function ConnectShopifyPage() {
 
     setLoading(true);
     try {
-      // In production, you'd redirect to Shopify OAuth flow
-      // For now, show a placeholder
-      setSuccess('Shopify OAuth integration would redirect here. Contact Casmir to complete setup.');
-      setShopUrl('');
+      // Generate state for CSRF protection
+      const state = Math.random().toString(36).substring(7);
+      sessionStorage.setItem('shopify_oauth_state', state);
+
+      // Build Shopify OAuth URL
+      const clientId = 'b0cdef30a61d2693817f1568cd6cd98b'; // From shopify.app.toml
+      const scopes = 'read_products,read_inventory,read_orders';
+      const redirectUri = `${window.location.origin}/api/shopify/callback`;
+
+      const authUrl = new URL(`https://${shopUrl}/admin/oauth/authorize`);
+      authUrl.searchParams.set('client_id', clientId);
+      authUrl.searchParams.set('scope', scopes);
+      authUrl.searchParams.set('redirect_uri', redirectUri);
+      authUrl.searchParams.set('state', state);
+
+      // Redirect to Shopify OAuth
+      window.location.href = authUrl.toString();
     } catch (err) {
-      setError('Failed to connect store. Please try again.');
-    } finally {
+      setError('Failed to start Shopify authorization. Please try again.');
       setLoading(false);
     }
   };
