@@ -60,7 +60,7 @@ export default function Marketplace() {
         if (!response.ok) throw new Error('Failed to fetch');
 
         const data = await response.json();
-        const fetchedProducts = data.products || [];
+        const fetchedProducts = (data.products || []) as Product[];
         setAllProducts(fetchedProducts);
 
         let filtered = fetchedProducts;
@@ -69,7 +69,7 @@ export default function Marketplace() {
         }
         setProducts(filtered);
 
-        const creatorIds: string[] = [...new Set(fetchedProducts.map((p: Product) => p.creator_id))];
+        const creatorIds = [...new Set(fetchedProducts.map((p) => p.creator_id))];
         const creatorMap = new Map<string, Creator>();
         const creatorArr: Creator[] = [];
 
