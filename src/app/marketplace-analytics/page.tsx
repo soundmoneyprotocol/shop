@@ -131,7 +131,7 @@ export default function MarketplaceAnalytics() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl font-light mb-4 text-black">Marketplace Analytics</h1>
-          <p className="text-gray-600">Compare prices across GOAT, StockX, Grailed, eBay and more</p>
+          <p className="text-gray-600">Compare prices across GOAT, StockX, Grailed, eBay powered by SoundMoney Pay</p>
         </motion.div>
 
         {/* Filters */}
