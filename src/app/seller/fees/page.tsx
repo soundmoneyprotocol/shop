@@ -184,7 +184,7 @@ export default function SellerFees() {
           <div className="bg-white border border-gray-200 rounded-2xl p-8">
             <h3 className="text-lg font-bold text-black mb-3">When do I get paid?</h3>
             <p className="text-gray-600">
-              Payments are processed within 5-7 business days after your customer confirms delivery. Funds are transferred directly to your verified bank account.
+              Payments are processed within 1-3 business days after your customer confirms delivery. Funds are transferred directly to your verified bank account.
             </p>
           </div>
 
