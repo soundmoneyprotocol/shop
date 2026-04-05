@@ -49,7 +49,6 @@ export async function POST(request: NextRequest) {
                   email: session.customer_email,
                   stripe_customer_id: session.customer as string,
                   created_at: new Date().toISOString(),
-                  first_purchase: true,
                 })
                 .select()
                 .single();
@@ -102,11 +101,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '2mb',
-    },
-  },
-};
