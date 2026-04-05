@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ShoppingCart, Heart, Share2, TrendingUp, X, CheckCircle, Loader } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Star, ShoppingCart, Heart, Share2, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/lib/cartStore';
 import toast from 'react-hot-toast';
@@ -32,42 +32,39 @@ const MOCK_PRODUCTS: Record<string, any> = {
     },
     badges: ['Verified Authentic', 'Seller Verified', 'Fast Shipping'],
   },
+  '2': {
+    id: '2',
+    title: 'Limited Edition Vintage Tee',
+    creator: 'VintageVibe',
+    creatorId: '2',
+    price: 4999,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=800&fit=crop',
+    category: 'Clothing',
+    rating: 4.5,
+    reviews: 42,
+    stock: 12,
+    sold: 8,
+    description:
+      '90s vintage graphic tee in excellent condition. Single stitch construction, faded graphic adds to the authenticity. Unisex sizing.',
+    details: {
+      condition: 'Excellent',
+      size: 'L',
+      era: '1990s',
+      brand: 'Vintage (Unknown)',
+      material: 'Cotton 100%',
+    },
+    badges: ['Authentic Vintage', 'Rare Find'],
+  },
 };
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
   const product = MOCK_PRODUCTS[params.id] || MOCK_PRODUCTS['1'];
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [showBidModal, setShowBidModal] = useState(false);
-  const [showOfferModal, setShowOfferModal] = useState(false);
-  const [showMintModal, setShowMintModal] = useState(false);
-  const [mintStep, setMintStep] = useState<'uploading' | 'saving' | 'confirming' | 'complete'>('uploading');
-  const [bidAmount, setBidAmount] = useState('');
-  const [offerAmount, setOfferAmount] = useState('');
 
   const addItem = useCartStore((state) => state.addItem);
 
-  const handleBid = () => {
-    if (!bidAmount || parseFloat(bidAmount) <= 0) {
-      toast.error('Please enter a valid bid amount');
-      return;
-    }
-    toast.success(`Bid placed for $${bidAmount}!`);
-    setShowBidModal(false);
-    setBidAmount('');
-  };
-
-  const handleOffer = () => {
-    if (!offerAmount || parseFloat(offerAmount) <= 0) {
-      toast.error('Please enter a valid offer amount');
-      return;
-    }
-    toast.success(`Offer sent for $${offerAmount}!`);
-    setShowOfferModal(false);
-    setOfferAmount('');
-  };
-
-  const handleCheckout = () => {
+  const handleAddToCart = () => {
     addItem({
       id: product.id,
       title: product.title,
@@ -76,24 +73,26 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
       creatorName: product.creator,
       maxStock: product.stock,
     });
-    toast.success('Added to cart!');
+    toast.success(`Added ${quantity} ${quantity > 1 ? 'items' : 'item'} to cart!`);
+    setQuantity(1);
   };
 
-  const startMintProcess = () => {
-    setShowMintModal(true);
-    setMintStep('uploading');
-
-    // Simulate mint flow
-    setTimeout(() => setMintStep('saving'), 1500);
-    setTimeout(() => setMintStep('confirming'), 3000);
-    setTimeout(() => setMintStep('complete'), 4500);
-  };
-
-  const getMintStepIcon = () => {
-    if (mintStep === 'complete') return <CheckCircle className="w-6 h-6 text-green-600" />;
-    if (mintStep === 'confirming') return <Loader className="w-6 h-6 text-blue-600 animate-spin" />;
-    return <CheckCircle className="w-6 h-6 text-green-600" />;
-  };
+  const reviews = [
+    {
+      id: 1,
+      author: 'Jordan Collector',
+      rating: 5,
+      comment: 'Authentic and in perfect condition. Great seller!',
+      date: '2024-04-01',
+    },
+    {
+      id: 2,
+      author: 'Sneaker Head',
+      rating: 4,
+      comment: 'Item matches description. Fast shipping.',
+      date: '2024-03-28',
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-white py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
@@ -202,36 +201,59 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
 
+            {/* Quantity Selector */}
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600">QUANTITY</p>
+              <div className="flex gap-3 items-center">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-4 py-2 border-2 border-black rounded-lg hover:bg-black/5 transition"
+                >
+                  −
+                </button>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) =>
+                    setQuantity(Math.min(Math.max(1, parseInt(e.target.value) || 1), product.stock))
+                  }
+                  className="w-20 text-center px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-black outline-none transition"
+                />
+                <button
+                  onClick={() => setQuantity(Math.min(quantity + 1, product.stock))}
+                  className="px-4 py-2 border-2 border-black rounded-lg hover:bg-black/5 transition"
+                >
+                  +
+                </button>
+                <p className="text-sm text-gray-600 ml-auto">
+                  Total: ${((product.price * quantity) / 100).toFixed(2)}
+                </p>
+              </div>
+            </div>
+
             {/* Action Buttons */}
             <div className="space-y-3 pt-4">
               <button
-                onClick={() => setShowBidModal(true)}
-                className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-black/90 transition"
-              >
-                Place a Bid
-              </button>
-              <button
-                onClick={() => setShowOfferModal(true)}
-                className="w-full py-3 border-2 border-black text-black font-semibold rounded-lg hover:bg-black/5 transition"
-              >
-                Make an Offer
-              </button>
-              <button
-                onClick={handleCheckout}
-                className="w-full py-3 bg-gray-100 text-black font-semibold rounded-lg hover:bg-gray-200 transition flex items-center justify-center gap-2"
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+                className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-black/90 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ShoppingCart size={20} />
-                Checkout
+                Add to Cart
               </button>
+              <Link href="/checkout" className="block">
+                <button className="w-full py-3 border-2 border-black text-black font-semibold rounded-lg hover:bg-black/5 transition">
+                  Buy Now
+                </button>
+              </Link>
             </div>
 
-            {/* Mint Option */}
-            <button
-              onClick={startMintProcess}
-              className="w-full py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition"
-            >
-              Mint as NFT
-            </button>
+            {/* Browse vs Auction Info */}
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-900">
+                For auction bidding, offers, and NFT minting, visit the <Link href="/seller/dashboard" className="font-semibold hover:underline">Auctions</Link> section.
+              </p>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -258,200 +280,33 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               ))}
             </div>
           </div>
+
+          {/* Reviews */}
+          <div>
+            <h2 className="text-2xl font-light mb-4">Reviews</h2>
+            <div className="space-y-4">
+              {reviews.map((review) => (
+                <div key={review.id} className="p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-start justify-between mb-2">
+                    <p className="font-semibold text-black">{review.author}</p>
+                    <p className="text-xs text-gray-600">{review.date}</p>
+                  </div>
+                  <div className="flex gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        className={i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-600">{review.comment}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
-
-      {/* Bid Modal */}
-      <AnimatePresence>
-        {showBidModal && (
-          <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div
-              className="bg-white rounded-lg max-w-md w-full p-6 space-y-4"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-light">Place a Bid</h3>
-                <button onClick={() => setShowBidModal(false)} className="p-2 hover:bg-gray-100 rounded-lg transition">
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-600 mb-2">CURRENT PRICE</p>
-                  <p className="text-3xl font-light">${(product.price / 100).toFixed(2)}</p>
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-gray-700 mb-2 block">Your Bid Amount</label>
-                  <input
-                    type="number"
-                    placeholder="Enter bid amount"
-                    value={bidAmount}
-                    onChange={(e) => setBidAmount(e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-black outline-none transition"
-                    min={product.price / 100}
-                    step="0.01"
-                  />
-                </div>
-
-                <div className="pt-2 space-y-2">
-                  <button
-                    onClick={handleBid}
-                    className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-black/90 transition"
-                  >
-                    Submit Bid
-                  </button>
-                  <button
-                    onClick={() => setShowBidModal(false)}
-                    className="w-full py-3 border-2 border-gray-300 text-black font-semibold rounded-lg hover:bg-gray-50 transition"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Offer Modal */}
-      <AnimatePresence>
-        {showOfferModal && (
-          <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div
-              className="bg-white rounded-lg max-w-md w-full p-6 space-y-4"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-light">Make an Offer</h3>
-                <button onClick={() => setShowOfferModal(false)} className="p-2 hover:bg-gray-100 rounded-lg transition">
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="space-y-3">
-                <div>
-                  <p className="text-sm text-gray-600 mb-2">ASKING PRICE</p>
-                  <p className="text-3xl font-light">${(product.price / 100).toFixed(2)}</p>
-                </div>
-
-                <div>
-                  <label className="text-sm font-semibold text-gray-700 mb-2 block">Your Offer Amount</label>
-                  <input
-                    type="number"
-                    placeholder="Enter offer amount"
-                    value={offerAmount}
-                    onChange={(e) => setOfferAmount(e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-black outline-none transition"
-                    step="0.01"
-                  />
-                </div>
-
-                <div className="pt-2 space-y-2">
-                  <button
-                    onClick={handleOffer}
-                    className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-black/90 transition"
-                  >
-                    Send Offer
-                  </button>
-                  <button
-                    onClick={() => setShowOfferModal(false)}
-                    className="w-full py-3 border-2 border-gray-300 text-black font-semibold rounded-lg hover:bg-gray-50 transition"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mint Modal */}
-      <AnimatePresence>
-        {showMintModal && (
-          <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div
-              className="bg-white rounded-lg max-w-md w-full p-6 space-y-6"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-light">Mint NFT</h3>
-                {mintStep === 'complete' && (
-                  <button onClick={() => setShowMintModal(false)} className="p-2 hover:bg-gray-100 rounded-lg transition">
-                    <X size={20} />
-                  </button>
-                )}
-              </div>
-
-              {/* Mint Steps */}
-              <div className="space-y-4">
-                {/* Step 1: Upload to IPFS */}
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1">
-                    {mintStep === 'uploading' && <Loader className="w-5 h-5 text-blue-600 animate-spin" />}
-                    {['saving', 'confirming', 'complete'].includes(mintStep) && <CheckCircle className="w-5 h-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-black">Upload to IPFS</p>
-                    <p className="text-sm text-gray-600">Please wait Secure metadata uploading your files</p>
-                  </div>
-                </div>
-
-                {/* Step 2: Save Metadata */}
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1">
-                    {['uploading'].includes(mintStep) && <div className="w-5 h-5 rounded-full border-2 border-gray-300" />}
-                    {mintStep === 'saving' && <Loader className="w-5 h-5 text-blue-600 animate-spin" />}
-                    {['confirming', 'complete'].includes(mintStep) && <CheckCircle className="w-5 h-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-black">Saving to Metadata</p>
-                    <p className="text-sm text-gray-600">Storing your NFT metadata on blockchain</p>
-                  </div>
-                </div>
-
-                {/* Step 3: Confirm Mint */}
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1">
-                    {['uploading', 'saving'].includes(mintStep) && <div className="w-5 h-5 rounded-full border-2 border-gray-300" />}
-                    {mintStep === 'confirming' && <Loader className="w-5 h-5 text-blue-600 animate-spin" />}
-                    {mintStep === 'complete' && <CheckCircle className="w-5 h-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-black">Awaiting Mint Confirmation</p>
-                    <p className="text-sm text-gray-600">Confirming your transaction on-chain</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Success Message */}
-              {mintStep === 'complete' && (
-                <motion.div className="p-4 bg-green-50 rounded-lg text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <p className="text-green-700 font-semibold mb-2">NFT Successfully Minted!</p>
-                  <p className="text-sm text-green-600">Your authenticity badge is now on the blockchain</p>
-                </motion.div>
-              )}
-
-              {mintStep === 'complete' && (
-                <button
-                  onClick={() => setShowMintModal(false)}
-                  className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-black/90 transition"
-                >
-                  Done
-                </button>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </main>
   );
 }
