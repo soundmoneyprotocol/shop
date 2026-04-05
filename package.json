@@ -22,10 +22,7 @@
     "@stripe/stripe-js": "^3.0.0",
     "@supabase/supabase-js": "^2.38.0",
     "@types/node": "^20.10.0",
-<<<<<<< HEAD
-=======
     "@types/react": "^18.2.0",
->>>>>>> old-marketplace
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.4.27",
     "axios": "^1.6.0",
@@ -48,10 +45,6 @@
     "@chainlink/contracts": "^0.8.0",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
-<<<<<<< HEAD
-    "@types/react": "19.2.14",
-=======
->>>>>>> old-marketplace
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "dotenv": "^16.3.0",
