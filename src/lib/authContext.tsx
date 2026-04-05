@@ -24,10 +24,20 @@ let supabaseClient: SupabaseClient | null = null;
 
 function initializeSupabase() {
   if (!supabaseClient && typeof window !== 'undefined') {
-    supabaseClient = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!url || !key) {
+      console.error('Missing Supabase environment variables', { hasUrl: !!url, hasKey: !!key });
+      return null;
+    }
+
+    try {
+      supabaseClient = createClient(url, key);
+    } catch (error) {
+      console.error('Failed to initialize Supabase:', error);
+      return null;
+    }
   }
   return supabaseClient;
 }
@@ -40,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = initializeSupabase();
 
     if (!supabase) {
+      console.warn('Supabase not available, skipping auth check');
       setLoading(false);
       return;
     }
@@ -115,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const supabase = initializeSupabase();
-    if (!supabase) throw new Error('Supabase client not initialized');
+    if (!supabase) throw new Error('Supabase client not available');
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -127,7 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     const supabase = initializeSupabase();
-    if (!supabase) throw new Error('Supabase client not initialized');
+    if (!supabase) throw new Error('Supabase client not available');
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
@@ -148,7 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     const supabase = initializeSupabase();
-    if (!supabase) throw new Error('Supabase client not initialized');
+    if (!supabase) throw new Error('Supabase client not available');
 
     const { error } = await supabase.auth.signOut();
     if (error) throw error;

@@ -52,8 +52,8 @@ export const useWeb3Store = create<Web3Store>((set, get) => ({
 
   connect: async () => {
     try {
-      if (!window.ethereum) {
-        throw new Error('MetaMask not installed');
+      if (typeof window === 'undefined' || !window.ethereum) {
+        throw new Error('MetaMask or Web3 wallet not installed');
       }
 
       const accounts = await window.ethereum.request({
