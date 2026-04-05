@@ -28,14 +28,13 @@ function initializeSupabase() {
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!url || !key) {
-      console.error('Missing Supabase environment variables', { hasUrl: !!url, hasKey: !!key });
       return null;
     }
 
     try {
       supabaseClient = createClient(url, key);
     } catch (error) {
-      console.error('Failed to initialize Supabase:', error);
+      // Silently fail if Supabase can't be initialized
       return null;
     }
   }
@@ -50,7 +49,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = initializeSupabase();
 
     if (!supabase) {
-      console.warn('Supabase not available, skipping auth check');
       setLoading(false);
       return;
     }
@@ -79,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
       } catch (error) {
-        console.error('Auth check error:', error);
+        // Silently handle errors
       } finally {
         if (mounted) {
           setLoading(false);
@@ -109,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             });
           }
         } catch (error) {
-          console.error('Error fetching buyer profile:', error);
+          // Silently handle errors
         }
       } else {
         if (mounted) {
@@ -126,7 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const supabase = initializeSupabase();
-    if (!supabase) throw new Error('Supabase client not available');
+    if (!supabase) throw new Error('Auth service not available');
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -138,7 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = async (email: string, password: string, firstName: string, lastName: string) => {
     const supabase = initializeSupabase();
-    if (!supabase) throw new Error('Supabase client not available');
+    if (!supabase) throw new Error('Auth service not available');
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
@@ -159,7 +157,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     const supabase = initializeSupabase();
-    if (!supabase) throw new Error('Supabase client not available');
+    if (!supabase) throw new Error('Auth service not available');
 
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
