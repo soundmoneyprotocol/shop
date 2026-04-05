@@ -279,7 +279,7 @@ export default function MarketplaceAnalytics() {
                   <div className="mb-6">
                     <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
                       <div
-                        className={`h-full transition-all ${isLowestPrice ? 'bg-green-600' : 'bg-blue-600'}`}
+                        className={`h-full transition-all ${'bg-green-600'}`}
                         style={{ width: `${percentOfMax}%` }}
                       />
                     </div>
