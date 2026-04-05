@@ -79,19 +79,17 @@ export default function Home() {
           animate="visible"
         >
           <div className="max-w-5xl mx-auto text-center">
-            <motion.h1
-              className="text-5xl sm:text-7xl font-bold mb-6 gradient-text"
-              variants={itemVariants}
-            >
-              The Creator Marketplace
-            </motion.h1>
+            <motion.div variants={itemVariants}>
+              <h1 className="text-5xl sm:text-7xl font-bold mb-6 gradient-text">
+                The Creator Marketplace
+              </h1>
+            </motion.div>
 
-            <motion.p
-              className="text-xl sm:text-2xl text-slate-300 mb-8 max-w-2xl mx-auto"
-              variants={itemVariants}
-            >
-              Sell sneakers, clothing, art, and collectibles directly to fans. Keep more revenue. Own your community.
-            </motion.p>
+            <motion.div variants={itemVariants}>
+              <p className="text-xl sm:text-2xl text-slate-300 mb-8 max-w-2xl mx-auto">
+                Sell sneakers, clothing, art, and collectibles directly to fans. Keep more revenue. Own your community.
+              </p>
+            </motion.div>
 
             <motion.div variants={itemVariants}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
