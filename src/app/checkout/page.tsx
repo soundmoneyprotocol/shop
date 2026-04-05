@@ -164,10 +164,10 @@ export default function Checkout() {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${
                     isCurrent
-                      ? 'bg-primary text-white'
+                      ? 'border-2 border-black bg-white text-black'
                       : isActive
-                      ? 'bg-primary/50 text-white'
-                      : 'bg-slate-700 text-slate-400'
+                      ? 'border-2 border-black bg-white text-black'
+                      : 'border-2 border-gray-400 bg-white text-gray-400'
                   }`}
                 >
                   {index + 1}

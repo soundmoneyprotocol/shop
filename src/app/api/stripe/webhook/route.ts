@@ -4,10 +4,12 @@ import { createClient } from '@supabase/supabase-js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -26,6 +28,8 @@ export async function POST(request: NextRequest) {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
+
+    const supabase = getSupabase();
 
     switch (event.type) {
       case 'checkout.session.completed':

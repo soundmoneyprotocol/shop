@@ -139,16 +139,10 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="md:hidden pb-4 space-y-3 border-t border-gray-300 pt-4">
             <Link
-              href="/marketplace"
+              href="/marketplace-analytics"
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
-              Browse Products
-            </Link>
-            <Link
-              href="/seller/dashboard"
-              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
-            >
-              Sell on SoundMoney
+              Analytics
             </Link>
             <Link
               href="/about"
@@ -157,10 +151,16 @@ export default function Navigation() {
               About Us
             </Link>
             <Link
-              href="/marketplace-analytics"
+              href="/seller/dashboard"
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
-              Analytics
+              Sell on SoundMoney
+            </Link>
+            <Link
+              href="/marketplace"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            >
+              Browse Products
             </Link>
             {!isConnected && (
               <button
