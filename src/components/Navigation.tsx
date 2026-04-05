@@ -103,7 +103,7 @@ export default function Navigation() {
                       Deposit Funds
                     </Link>
                     <Link
-                      href="/seller/dashboard"
+                      href="/auctions"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
                     >
                       Auctions
@@ -169,7 +169,7 @@ export default function Navigation() {
               Analytics
             </Link>
             <Link
-              href="/seller/dashboard"
+              href="/auctions"
               onClick={closeMenu}
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
