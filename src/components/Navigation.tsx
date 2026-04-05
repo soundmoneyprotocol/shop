@@ -75,7 +75,7 @@ export default function Navigation() {
             ) : (
               <div className="hidden lg:flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-lg">
                 <Wallet size={18} />
-                {address?.substring(0, 6)}...{address?.substring(-4)}
+                {address?.substring(0, 5)}...{address?.substring(-5)}
               </div>
             )}
 
