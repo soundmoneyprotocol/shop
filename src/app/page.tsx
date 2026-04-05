@@ -212,6 +212,7 @@ export default function Home() {
                 <li><Link href="/seller/register" className="hover:text-green-600">Become Seller</Link></li>
                 <li><Link href="/seller/guide" className="hover:text-green-600">Seller Guide</Link></li>
                 <li><Link href="/seller/fees" className="hover:text-green-600">Fee Structure</Link></li>
+                <li><Link href="/seller/connect-shopify" className="hover:text-green-600">Connect Shopify</Link></li>
               </ul>
             </div>
             <div>

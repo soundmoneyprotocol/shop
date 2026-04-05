@@ -57,8 +57,8 @@ const TRENDING_PRODUCTS: TrendingItem[] = [
   },
   {
     id: '4',
-    title: 'Retro Vinyl Record',
-    creator: 'MusicLover',
+    title: 'Street Man',
+    creator: 'Drope Beats',
     price: 2999,
     image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=400&fit=crop',
     rating: 4.6,

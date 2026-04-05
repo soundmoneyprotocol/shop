@@ -59,8 +59,8 @@ const MOCK_PRODUCTS = [
   },
   {
     id: '4',
-    title: 'Retro Vinyl Record',
-    creator: 'MusicLover',
+    title: 'Street Man',
+    creator: 'Drope Beats',
     brand: 'STOCKX',
     price: 2999,
     image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300&h=300&fit=crop',
