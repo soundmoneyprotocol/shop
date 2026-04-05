@@ -42,7 +42,7 @@ Create/update `.env`:
 # From shopify.app.toml
 SHOPIFY_API_KEY=b0cdef30a61d2693817f1568cd6cd98b
 SHOPIFY_API_SECRET=shppa_xxxxxxxxxxxxxxxxx  # From step 1
-SHOPIFY_DEV_STORE=solarahsessentials.myshopify.com
+SHOPIFY_DEV_STORE=soundmoneyshop.myshopify.com
 SHOPIFY_APP_URL=http://localhost:3000
 
 # Database
@@ -67,7 +67,7 @@ npm run dev
 **Local Testing:**
 ```
 1. Open http://localhost:3002/seller/connect-shopify
-2. Enter: solarahsessentials.myshopify.com
+2. Enter: soundmoneyshop.myshopify.com
 3. Click "Connect to Shopify"
 4. You'll be redirected to Shopify OAuth
 5. Click "Install app"
@@ -199,7 +199,7 @@ https://personally-aids-framework-mentor.trycloudflare.com/api/shopify/callback 
 - [ ] Backend running: `npm run dev`
 - [ ] Frontend running on `localhost:3002`
 - [ ] Try OAuth flow on `/seller/connect-shopify`
-- [ ] Authorize with dev store: `solarahsessentials.myshopify.com`
+- [ ] Authorize with dev store: `soundmoneyshop.myshopify.com`
 - [ ] See "Successfully authorized" message
 - [ ] Click "Sync Products"
 - [ ] Products appear in marketplace
