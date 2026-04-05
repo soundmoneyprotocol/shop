@@ -2,16 +2,30 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, Menu, X, Wallet } from 'lucide-react';
+import { ShoppingCart, Menu, X, Wallet, LogOut } from 'lucide-react';
 import { useCartStore } from '@/lib/cartStore';
 import { useWeb3Store } from '@/lib/web3Store';
+import { useAuth } from '@/lib/authContext';
+import toast from 'react-hot-toast';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const totalItems = useCartStore((state) => state.totalItems);
   const isConnected = useWeb3Store((state) => state.isConnected);
   const address = useWeb3Store((state) => state.address);
   const connect = useWeb3Store((state) => state.connect);
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Logged out successfully');
+      setIsUserMenuOpen(false);
+    } catch (error: any) {
+      toast.error('Logout failed');
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-300">
@@ -58,6 +72,44 @@ export default function Navigation() {
               <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-lg">
                 <Wallet size={18} />
                 {address?.substring(0, 6)}...{address?.substring(-4)}
+              </div>
+            )}
+
+            {/* Auth Section */}
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="hidden md:flex items-center gap-2 px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition"
+                >
+                  {user.firstName || 'Account'}
+                </button>
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+                    <Link
+                      href="/seller/dashboard"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition flex items-center gap-2"
+                    >
+                      <LogOut size={16} />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-2">
+                <Link href="/login" className="text-gray-700 hover:text-black transition font-semibold text-sm">
+                  Login
+                </Link>
+                <Link href="/signup" className="px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition">
+                  Sign Up
+                </Link>
               </div>
             )}
 
@@ -117,6 +169,30 @@ export default function Navigation() {
               >
                 Connect Wallet
               </button>
+            )}
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="w-full px-4 py-2 bg-red-600 text-white font-semibold hover:bg-red-700 transition rounded-lg flex items-center justify-center gap-2"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
+            ) : (
+              <div className="space-y-2">
+                <Link
+                  href="/login"
+                  className="block px-4 py-2 bg-gray-200 text-black font-semibold hover:bg-gray-300 transition rounded-lg text-center"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="block px-4 py-2 bg-black text-white font-semibold hover:bg-gray-800 transition rounded-lg text-center"
+                >
+                  Sign Up
+                </Link>
+              </div>
             )}
           </div>
         )}

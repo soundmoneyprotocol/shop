@@ -2,10 +2,11 @@
 
 import { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from '@/lib/authContext';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <>
+    <AuthProvider>
       {children}
       <Toaster
         position="bottom-right"
@@ -20,6 +21,6 @@ export function Providers({ children }: { children: ReactNode }) {
           },
         }}
       />
-    </>
+    </AuthProvider>
   );
 }
