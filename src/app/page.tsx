@@ -204,6 +204,9 @@ export default function Home() {
                 <li><Link href="/marketplace" className="hover:text-green-600">Marketplace</Link></li>
                 <li><Link href="/categories" className="hover:text-green-600">Categories</Link></li>
                 <li><Link href="/trending" className="hover:text-green-600">Trending</Link></li>
+                <li><Link href="/auctions" className="hover:text-green-600">Live Auctions</Link></li>
+                <li><Link href="/account" className="hover:text-green-600">My Account</Link></li>
+                <li><Link href="/deposit" className="hover:text-green-600">Deposit Funds</Link></li>
               </ul>
             </div>
             <div>

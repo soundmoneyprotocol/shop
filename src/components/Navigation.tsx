@@ -91,6 +91,18 @@ export default function Navigation() {
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
                     <Link
+                      href="/account"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      My Account
+                    </Link>
+                    <Link
+                      href="/deposit"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Deposit Funds
+                    </Link>
+                    <Link
                       href="/seller/dashboard"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
                     >
@@ -177,6 +189,24 @@ export default function Navigation() {
             >
               Sell on SoundMoney
             </Link>
+            {isConnected && user && (
+              <>
+                <Link
+                  href="/account"
+                  onClick={closeMenu}
+                  className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+                >
+                  My Account
+                </Link>
+                <Link
+                  href="/deposit"
+                  onClick={closeMenu}
+                  className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+                >
+                  Deposit Funds
+                </Link>
+              </>
+            )}
             {!isConnected && (
               <button
                 onClick={() => {
