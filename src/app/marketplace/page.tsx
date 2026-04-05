@@ -69,7 +69,7 @@ export default function Marketplace() {
         }
         setProducts(filtered);
 
-        const creatorIds = [...new Set(fetchedProducts.map((p: Product) => p.creator_id))];
+        const creatorIds: string[] = [...new Set(fetchedProducts.map((p: Product) => p.creator_id))];
         const creatorMap = new Map<string, Creator>();
         const creatorArr: Creator[] = [];
 
