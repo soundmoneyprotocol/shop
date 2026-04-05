@@ -63,7 +63,7 @@ body {
 
 /* Button variants */
 .btn-primary {
-  @apply px-6 py-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition-all duration-200 rounded-xl;
+  @apply px-6 py-3 border-2 border-black text-black font-semibold hover:bg-black/5 transition-all duration-200 rounded-xl;
 }
 
 .btn-secondary {
