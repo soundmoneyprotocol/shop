@@ -81,7 +81,7 @@ export default function Signup() {
               <span className="text-black font-semibold">Sign Up</span>
             </div>
             <h1 className="text-4xl font-light mb-2">Create Account</h1>
-            <p className="text-gray-600">Join our marketplace</p>
+            <p className="text-gray-600">Join our marketplace & Get Verified</p>
           </div>
         </motion.div>
 

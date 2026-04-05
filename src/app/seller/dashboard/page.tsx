@@ -146,7 +146,7 @@ export default function SellerDashboard() {
             </div>
             <button
               onClick={() => setActiveTab('create')}
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center gap-1 sm:gap-2 text-sm sm:text-base whitespace-nowrap"
             >
               <Plus size={20} />
               List New Product
@@ -155,7 +155,7 @@ export default function SellerDashboard() {
 
           {/* Seller Info Card */}
           <motion.div className="card" variants={itemVariants}>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                   <span className="text-2xl font-bold text-green-600">SK</span>
@@ -171,7 +171,7 @@ export default function SellerDashboard() {
                   </div>
                 </div>
               </div>
-              <Link href="/seller/settings" className="btn-outline flex items-center gap-2">
+              <Link href="/seller/settings" className="btn-outline flex items-center gap-1 text-sm px-2 sm:px-4 py-2 flex-shrink-0">
                 <Settings size={18} />
                 Settings
               </Link>
