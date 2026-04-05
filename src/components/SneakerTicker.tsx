@@ -29,7 +29,7 @@ export const SneakerTicker: React.FC = () => {
   if (!mounted) return null;
 
   return (
-    <div style={{ borderTop: '1.5px solid black', borderBottom: '1.5px solid black' }} className='bg-white'>
+    <div style={{ borderTop: '1.5px solid black', borderBottom: '1.5px solid black' }} className='sticky top-16 z-40 bg-white'>
       <div className='max-w-full overflow-hidden'>
         <div className='flex gap-4 sm:gap-8 md:gap-12 px-2 sm:px-4 md:px-6 py-2 sm:py-3 animate-scroll whitespace-nowrap'>
           {/* Render twice for seamless loop */}
