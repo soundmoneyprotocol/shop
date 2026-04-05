@@ -141,7 +141,7 @@ export default function Navigation() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden pb-4 space-y-3 border-t border-gray-300 pt-4 ">
+          <div className="lg:hidden pb-4 space-y-3 border-t border-gray-300 pt-4 sticky top-16 bg-white/80 backdrop-blur z-50">
             <Link
               href="/about"
               onClick={closeMenu}
