@@ -34,7 +34,7 @@ const MOCK_ORDERS = [
     price: 159.99,
     status: 'Delivered',
     date: '2024-04-01',
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100',
+    image: '/Air-Jordan-1.png?w=100',
   },
   {
     id: 'ORD-002',
@@ -43,7 +43,7 @@ const MOCK_ORDERS = [
     price: 89.99,
     status: 'In Transit',
     date: '2024-03-25',
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100',
+    image: '/Air-Jordan-1.png?w=100',
   },
 ];
 

@@ -30,7 +30,7 @@ const MOCK_PRODUCTS = [
     creator: 'SneakerKing',
     brand: 'YEEZY',
     price: 15999,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop',
+    image: '/Air-Jordan-1.png?w=300&h=300&fit=crop',
     category: 'Sneakers',
     rating: 4.8,
     stock: 5,

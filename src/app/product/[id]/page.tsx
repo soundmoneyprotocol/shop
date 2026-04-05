@@ -15,7 +15,7 @@ const MOCK_PRODUCTS: Record<string, any> = {
     creator: 'SneakerKing',
     creatorId: '1',
     price: 15999,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop',
+    image: '/Air-Jordan-1.png?w=800&h=800&fit=crop',
     category: 'Sneakers',
     rating: 4.8,
     reviews: 127,
