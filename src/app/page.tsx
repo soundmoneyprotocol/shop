@@ -61,13 +61,13 @@ export default function Home() {
                 alt="SoundMoney"
                 className="h-8 w-8 object-contain"
               />
-              <span className="text-xl font-light text-black">SoundMoney</span>
+              <span className="hidden sm:inline text-xl font-light text-black">SoundMoney</span>
             </div>
-            <div className="flex gap-4">
-              <Link href="/marketplace" className="btn-primary">
+            <div className="flex gap-2 sm:gap-4">
+              <Link href="/marketplace" className="btn-primary px-3 sm:px-6 text-sm sm:text-base">
                 Explore
               </Link>
-              <Link href="/seller/register" className="btn-secondary">
+              <Link href="/seller/register" className="btn-secondary px-3 sm:px-6 text-sm sm:text-base">
                 Sell
               </Link>
             </div>
@@ -179,7 +179,7 @@ export default function Home() {
             <h2 className="text-4xl font-light mb-6">Ready to Get Started?</h2>
             <p className="text-xl text-gray-600 mb-8">Join thousands of creators earning directly from their fans</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/marketplace" className="btn-primary">
+              <Link href="/marketplace" className="btn-primary px-3 sm:px-6 text-sm sm:text-base">
                 Browse Products
               </Link>
               <Link href="/seller/register" className="btn-outline">
