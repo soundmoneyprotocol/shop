@@ -99,7 +99,6 @@ export default function Marketplace() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl font-light mb-2">Marketplace</h1>
-          <p className="text-gray-600">Discover products from creators worldwide</p>
         </motion.div>
 
         {/* Filters */}

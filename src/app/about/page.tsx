@@ -89,6 +89,8 @@ export default function About() {
     },
   ];
 
+  const hideFeeForFeatures = ['Community Votes', 'Artist Verification'];
+
   return (
     <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -115,7 +117,7 @@ export default function About() {
           <motion.div className="card mb-8" variants={itemVariants}>
             <h2 className="text-3xl font-light mb-4">Our Mission</h2>
             <p className="text-gray-700 text-lg leading-relaxed">
-              SoundMoney is building an authenticated marketplace where artists own their success. We eliminate middlemen,
+              SoundMoney is building an authentic marketplace where artists own their success. We eliminate middlemen,
               maximize artist earnings, and create a trusted platform for buying, selling, and trading artist merchandise.
               Every transaction is verified and secure. Every artist is authenticated. Every sale is fair.
             </p>
@@ -171,16 +173,18 @@ export default function About() {
                     <h3 className="text-xl font-bold text-black mb-2">{feature.name}</h3>
                     <p className="text-gray-700">{feature.description}</p>
                   </div>
-                  <div className="flex flex-col gap-4 md:text-right min-w-[150px]">
-                    <div>
-                      <p className="text-xs text-gray-600 font-semibold">Platform Fee</p>
-                      <p className="text-2xl font-bold text-gray-600">{feature.platform}</p>
+                  {!hideFeeForFeatures.includes(feature.name) && (
+                    <div className="flex flex-col gap-4 md:text-right min-w-[150px]">
+                      <div>
+                        <p className="text-xs text-gray-600 font-semibold">Platform Fee</p>
+                        <p className="text-2xl font-bold text-gray-600">{feature.platform}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 font-semibold">Artist Keeps</p>
+                        <p className="text-2xl font-bold text-green-600">{feature.artist}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-600 font-semibold">Artist Keeps</p>
-                      <p className="text-2xl font-bold text-green-600">{feature.artist}</p>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -236,7 +240,7 @@ export default function About() {
 
         {/* CTA Section */}
         <motion.div
-          className="card bg-gradient-to-r from-green-50 to-green-100"
+          className="card bg-white border border-gray-200"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -246,7 +250,7 @@ export default function About() {
             <h2 className="text-3xl font-light mb-4">Ready to Launch Your Shop?</h2>
             <p className="text-gray-700 mb-8">Join hundreds of artists earning directly from their fanbase. No middlemen. No approval delays. Just you and your fans.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/marketplace" className="btn-primary">
+              <Link href="/marketplace" className="btn-outline">
                 Browse Merchandise
               </Link>
               <Link href="/seller/register" className="btn-outline">

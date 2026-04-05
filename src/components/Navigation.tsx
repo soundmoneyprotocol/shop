@@ -38,6 +38,9 @@ export default function Navigation() {
             <Link href="/about" className="text-gray-700 hover:text-black transition">
               About
             </Link>
+            <Link href="/marketplace-analytics" className="text-gray-700 hover:text-black transition">
+              Analytics
+            </Link>
           </div>
 
           {/* Right Section */}
@@ -100,6 +103,12 @@ export default function Navigation() {
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               About Us
+            </Link>
+            <Link
+              href="/marketplace-analytics"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            >
+              Analytics
             </Link>
             {!isConnected && (
               <button
