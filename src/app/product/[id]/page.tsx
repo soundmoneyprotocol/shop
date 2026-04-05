@@ -158,7 +158,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                     </button>
                   </div>
                   <div className="absolute bottom-4 left-4 flex gap-2">
-                    {product.badges.map((badge, i) => (
+                    {product.badges.map((badge: string, i: number) => (
                       <span key={i} className="badge badge-primary text-xs">
                         {badge}
                       </span>
@@ -333,7 +333,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                   <div>
                     <h3 className="text-xl font-bold mb-4">Item Details</h3>
                     <div className="grid grid-cols-2 gap-6">
-                      {Object.entries(product.details).map(([key, value]) => (
+                      {Object.entries(product.details).map(([key, value]: [string, any]) => (
                         <div key={key}>
                           <p className="text-slate-400 text-sm mb-1">{key.charAt(0).toUpperCase() + key.slice(1)}</p>
                           <p className="font-semibold">{value}</p>
@@ -357,7 +357,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                     <div className="card text-center">
                       <p className="text-4xl font-bold text-primary">{product.rating}</p>
                       <div className="flex items-center justify-center gap-1 my-2">
-                        {[...Array(5)].map((_, i) => (
+                        {[...Array(5)].map((_: any, i: number) => (
                           <Star
                             key={i}
                             size={16}
@@ -370,13 +370,13 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                   </div>
 
                   <div className="space-y-4">
-                    {reviews.map((review) => (
+                    {reviews.map((review: typeof reviews[0]) => (
                       <div key={review.id} className="card">
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <p className="font-semibold">{review.author}</p>
                             <div className="flex items-center gap-2 mt-1">
-                              {[...Array(5)].map((_, i) => (
+                              {[...Array(5)].map((_: any, i: number) => (
                                 <Star
                                   key={i}
                                   size={14}
