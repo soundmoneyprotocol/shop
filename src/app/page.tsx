@@ -74,49 +74,54 @@ export default function Home() {
         <div className="absolute inset-0 bg-grid-white/[0.02] -z-10" />
 
         <motion.div
-          className="max-w-5xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.h1
-            className="text-5xl sm:text-7xl font-bold mb-6 gradient-text"
-            variants={itemVariants}
-          >
-            The Creator Marketplace
-          </motion.h1>
+          <div className="max-w-5xl mx-auto text-center">
+            <motion.h1
+              className="text-5xl sm:text-7xl font-bold mb-6 gradient-text"
+              variants={itemVariants}
+            >
+              The Creator Marketplace
+            </motion.h1>
 
-          <motion.p
-            className="text-xl sm:text-2xl text-slate-300 mb-8 max-w-2xl mx-auto"
-            variants={itemVariants}
-          >
-            Sell sneakers, clothing, art, and collectibles directly to fans. Keep more revenue. Own your community.
-          </motion.p>
+            <motion.p
+              className="text-xl sm:text-2xl text-slate-300 mb-8 max-w-2xl mx-auto"
+              variants={itemVariants}
+            >
+              Sell sneakers, clothing, art, and collectibles directly to fans. Keep more revenue. Own your community.
+            </motion.p>
 
-          <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={itemVariants}>
-            <Link href="/marketplace" className="btn-primary flex items-center justify-center gap-2">
-              Start Shopping <ArrowRight size={20} />
-            </Link>
-            <Link href="/seller/register" className="btn-outline flex items-center justify-center gap-2">
-              Become a Creator
-            </Link>
-          </motion.div>
+            <motion.div variants={itemVariants}>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/marketplace" className="btn-primary flex items-center justify-center gap-2">
+                  Start Shopping <ArrowRight size={20} />
+                </Link>
+                <Link href="/seller/register" className="btn-outline flex items-center justify-center gap-2">
+                  Become a Creator
+                </Link>
+              </div>
+            </motion.div>
 
-          {/* Stats */}
-          <motion.div className="mt-16 grid grid-cols-3 gap-8" variants={itemVariants}>
-            <div>
-              <div className="text-4xl font-bold text-primary">10K+</div>
-              <div className="text-slate-400">Creators</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-secondary">100K+</div>
-              <div className="text-slate-400">Products</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary">$50M+</div>
-              <div className="text-slate-400">Annual GMV</div>
-            </div>
-          </motion.div>
+            {/* Stats */}
+            <motion.div variants={itemVariants}>
+              <div className="mt-16 grid grid-cols-3 gap-8">
+                <div>
+                  <div className="text-4xl font-bold text-primary">10K+</div>
+                  <div className="text-slate-400">Creators</div>
+                </div>
+                <div>
+                  <div className="text-4xl font-bold text-secondary">100K+</div>
+                  <div className="text-slate-400">Products</div>
+                </div>
+                <div>
+                  <div className="text-4xl font-bold text-primary">$50M+</div>
+                  <div className="text-slate-400">Annual GMV</div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
 
@@ -124,37 +129,40 @@ export default function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <motion.div
-            className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">Why Choose SoundMoney Shopping?</h2>
-            <p className="text-xl text-slate-400">Everything you need to build your creator business</p>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-4">Why Choose SoundMoney Shopping?</h2>
+              <p className="text-xl text-slate-400">Everything you need to build your creator business</p>
+            </div>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {features.map((feature, i) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={i}
-                  className="card-hover p-8"
-                  variants={itemVariants}
-                >
-                  <Icon className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
-                  <p className="text-slate-400">{feature.description}</p>
-                </motion.div>
-              );
-            })}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {features.map((feature, i) => {
+                const Icon = feature.icon;
+                return (
+                  <motion.div
+                    key={i}
+                    variants={itemVariants}
+                  >
+                    <div className="card-hover p-8">
+                      <Icon className="w-12 h-12 text-primary mb-4" />
+                      <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                      <p className="text-slate-400">{feature.description}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </motion.div>
         </div>
       </section>
@@ -168,15 +176,17 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
-            <p className="text-xl text-slate-300 mb-8">Join thousands of creators earning directly from their fans</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/marketplace" className="btn-primary">
-                Browse Products
-              </Link>
-              <Link href="/seller/register" className="btn-outline">
-                List Your First Item
-              </Link>
+            <div>
+              <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+              <p className="text-xl text-slate-300 mb-8">Join thousands of creators earning directly from their fans</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/marketplace" className="btn-primary">
+                  Browse Products
+                </Link>
+                <Link href="/seller/register" className="btn-outline">
+                  List Your First Item
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>
