@@ -235,7 +235,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               <div className="flex gap-3 items-center">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition"
+                  className="px-4 py-2 border border-black rounded-lg hover:bg-black/5 transition"
                 >
                   −
                 </button>
@@ -249,7 +249,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
                 />
                 <button
                   onClick={() => setQuantity(Math.min(quantity + 1, product.stock))}
-                  className="px-4 py-2 bg-slate-800 rounded-lg hover:bg-slate-700 transition"
+                  className="px-4 py-2 border border-black rounded-lg hover:bg-black/5 transition"
                 >
                   +
                 </button>
