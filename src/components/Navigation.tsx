@@ -53,6 +53,9 @@ export default function Navigation() {
             <Link href="/seller/dashboard" className="text-gray-700 hover:text-black transition">
               Sell
             </Link>
+            <Link href="/customize-shoe" className="text-gray-700 hover:text-black transition">
+              Customize
+            </Link>
             <Link href="/about" className="text-gray-700 hover:text-black transition">
               About
             </Link>
@@ -167,6 +170,13 @@ export default function Navigation() {
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Analytics
+            </Link>
+            <Link
+              href="/customize-shoe"
+              onClick={closeMenu}
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            >
+              Customize Shoe
             </Link>
             <Link
               href="/auctions"
