@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import { ethers } from 'ethers';
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 interface Web3Store {
   // Connection state
   isConnected: boolean;
