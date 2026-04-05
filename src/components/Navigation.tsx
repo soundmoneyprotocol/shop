@@ -14,7 +14,7 @@ export default function Navigation() {
   const connect = useWeb3Store((state) => state.connect);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -24,18 +24,18 @@ export default function Navigation() {
               alt="SoundMoney"
               className="h-8 w-8 object-contain"
             />
-            <div className="text-lg font-semibold text-gray-900">SoundMoney</div>
+            <div className="text-xl font-light text-black">SoundMoney</div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/marketplace" className="text-sm text-gray-700 hover:text-gray-900 transition">
+            <Link href="/marketplace" className="text-gray-700 hover:text-black transition">
               Browse
             </Link>
-            <Link href="/seller/dashboard" className="text-sm text-gray-700 hover:text-gray-900 transition">
+            <Link href="/seller/dashboard" className="text-gray-700 hover:text-black transition">
               Sell
             </Link>
-            <Link href="/about" className="text-sm text-gray-700 hover:text-gray-900 transition">
+            <Link href="/about" className="text-gray-700 hover:text-black transition">
               About
             </Link>
           </div>
@@ -46,13 +46,13 @@ export default function Navigation() {
             {!isConnected ? (
               <button
                 onClick={connect}
-                className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transition rounded"
+                className="hidden md:flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 transition text-sm font-semibold text-white rounded-lg"
               >
                 <Wallet size={18} />
-                Connect
+                Connect Wallet
               </button>
             ) : (
-              <div className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-900">
+              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-lg">
                 <Wallet size={18} />
                 {address?.substring(0, 6)}...{address?.substring(-4)}
               </div>
@@ -60,10 +60,10 @@ export default function Navigation() {
 
             {/* Cart */}
             <Link href="/checkout" className="relative">
-              <button className="p-2 text-gray-700 hover:text-gray-900 transition">
-                <ShoppingCart size={20} />
+              <button className="p-2 hover:bg-gray-100 transition">
+                <ShoppingCart size={24} className="text-gray-900" />
                 {totalItems > 0 && (
-                  <span className="absolute top-1 right-1 bg-green-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute top-0 right-0 bg-green-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
@@ -73,38 +73,38 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-gray-900 transition"
+              className="md:hidden p-2 hover:bg-gray-100 transition"
             >
-              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 space-y-3 border-t border-gray-200 pt-4">
+          <div className="md:hidden pb-4 space-y-3 border-t border-gray-300 pt-4">
             <Link
               href="/marketplace"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Browse Products
             </Link>
             <Link
               href="/seller/dashboard"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Sell on SoundMoney
             </Link>
             <Link
               href="/about"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded transition"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               About Us
             </Link>
             {!isConnected && (
               <button
                 onClick={connect}
-                className="w-full px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded font-medium hover:from-green-600 hover:to-green-700 transition text-sm"
+                className="w-full px-4 py-2 bg-green-600 text-white font-semibold hover:bg-green-700 transition rounded-lg"
               >
                 Connect Wallet
               </button>

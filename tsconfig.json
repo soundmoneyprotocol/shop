@@ -32,7 +32,10 @@
       }
     ],
     "allowJs": true,
+<<<<<<< HEAD
     "forceConsistentCasingInFileNames": true,
+=======
+>>>>>>> old-marketplace
     "noEmit": true,
     "isolatedModules": true
   },

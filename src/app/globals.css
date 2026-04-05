@@ -25,7 +25,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-full;
+  @apply bg-gray-400;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -63,49 +63,49 @@ body {
 
 /* Button variants */
 .btn-primary {
-  @apply px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition-all duration-200;
+  @apply px-6 py-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition-all duration-200 rounded-xl;
 }
 
 .btn-secondary {
-  @apply px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-all duration-200;
+  @apply px-6 py-3 bg-green-600 text-white font-semibold hover:bg-green-700 transition-all duration-200 rounded-xl;
 }
 
 .btn-outline {
-  @apply px-6 py-3 border-2 border-black text-black rounded-lg font-semibold hover:bg-black hover:text-white transition-all duration-200;
+  @apply px-6 py-3 border-2 border-green-600 text-green-600 font-semibold hover:bg-green-600 hover:text-white transition-all duration-200 rounded-xl;
 }
 
 /* Card styles */
 .card {
-  @apply bg-white rounded-xl border border-gray-300 p-6;
+  @apply bg-white p-6 rounded-2xl;
 }
 
 .card-hover {
-  @apply card hover:border-gray-400 transition-all duration-200 hover:shadow-lg hover:shadow-gray-300/50;
+  @apply card transition-all duration-200 hover:shadow-lg hover:shadow-gray-300/50;
 }
 
 /* Input styles */
 .input-base {
-  @apply w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all duration-200;
+  @apply w-full px-4 py-3 bg-white border border-gray-300 text-black placeholder-gray-500 focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all duration-200 rounded-lg;
 }
 
 /* Badge styles */
 .badge {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  @apply inline-flex items-center px-3 py-1 text-sm font-medium;
 }
 
 .badge-primary {
-  @apply badge bg-black/10 text-black border border-black/30;
+  @apply badge bg-green-100 text-green-700 border border-green-300;
 }
 
 .badge-secondary {
-  @apply badge bg-green-500/10 text-green-700 border border-green-500/30;
+  @apply badge bg-green-50 text-green-700 border border-green-200;
 }
 
 .badge-success {
-  @apply badge bg-green-500/10 text-green-700 border border-green-500/30;
+  @apply badge bg-green-100 text-green-700 border border-green-300;
 }
 
 /* Gradient text */
 .gradient-text {
-  @apply bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent;
 }
