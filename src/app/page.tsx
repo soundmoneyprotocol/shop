@@ -98,7 +98,7 @@ export default function Home() {
             className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto"
             variants={itemVariants}
           >
-            Sell sneakers, clothing, art, and collectibles directly to fans. Keep more revenue. Own your community.
+            Sell sneakers, clothing, vinyl, cd's and cassettes directly to fans. Keep more revenue. Own your community.
           </motion.p>
 
           <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={itemVariants}>
