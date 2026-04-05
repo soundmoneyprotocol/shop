@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, X, Loader, CheckCircle } from 'lucide-react';
+import { Star, X } from 'lucide-react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -39,8 +39,6 @@ export default function AuctionsPage() {
   const [selectedProduct, setSelectedProduct] = useState<typeof AUCTION_PRODUCTS[0] | null>(null);
   const [showBidModal, setShowBidModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
-  const [showMintModal, setShowMintModal] = useState(false);
-  const [mintStep, setMintStep] = useState<'uploading' | 'saving' | 'confirming' | 'complete'>('uploading');
   const [bidAmount, setBidAmount] = useState('');
   const [offerAmount, setOfferAmount] = useState('');
 
@@ -62,14 +60,6 @@ export default function AuctionsPage() {
     toast.success(`Offer of $${offerAmount} sent!`);
     setShowOfferModal(false);
     setOfferAmount('');
-  };
-
-  const startMintProcess = () => {
-    setShowMintModal(true);
-    setMintStep('uploading');
-    setTimeout(() => setMintStep('saving'), 1500);
-    setTimeout(() => setMintStep('confirming'), 3000);
-    setTimeout(() => setMintStep('complete'), 4500);
   };
 
   return (
@@ -162,15 +152,11 @@ export default function AuctionsPage() {
                   >
                     Make an Offer
                   </button>
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      startMintProcess();
-                    }}
-                    className="w-full py-2 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition text-sm"
-                  >
-                    Mint NFT
-                  </button>
+                  <Link href="/authenticate" className="block">
+                    <button className="w-full py-2 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition text-sm">
+                      Authenticate & Mint
+                    </button>
+                  </Link>
                 </div>
               </div>
             </motion.div>
@@ -290,87 +276,6 @@ export default function AuctionsPage() {
                   Cancel
                 </button>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mint Modal */}
-      <AnimatePresence>
-        {showMintModal && selectedProduct && (
-          <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div
-              className="bg-white rounded-lg max-w-md w-full p-6 space-y-6"
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-light">Mint NFT</h3>
-                {mintStep === 'complete' && (
-                  <button onClick={() => setShowMintModal(false)} className="p-2 hover:bg-gray-100 rounded-lg transition">
-                    <X size={20} />
-                  </button>
-                )}
-              </div>
-
-              {/* Mint Steps */}
-              <div className="space-y-4">
-                {/* Step 1 */}
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1">
-                    {mintStep === 'uploading' && <Loader className="w-5 h-5 text-blue-600 animate-spin" />}
-                    {['saving', 'confirming', 'complete'].includes(mintStep) && <CheckCircle className="w-5 h-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-black">Upload to IPFS</p>
-                    <p className="text-sm text-gray-600">Secure metadata uploading your files</p>
-                  </div>
-                </div>
-
-                {/* Step 2 */}
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1">
-                    {['uploading'].includes(mintStep) && <div className="w-5 h-5 rounded-full border-2 border-gray-300" />}
-                    {mintStep === 'saving' && <Loader className="w-5 h-5 text-blue-600 animate-spin" />}
-                    {['confirming', 'complete'].includes(mintStep) && <CheckCircle className="w-5 h-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-black">Saving to Metadata</p>
-                    <p className="text-sm text-gray-600">Storing your NFT metadata on blockchain</p>
-                  </div>
-                </div>
-
-                {/* Step 3 */}
-                <div className="flex gap-4 items-start">
-                  <div className="mt-1">
-                    {['uploading', 'saving'].includes(mintStep) && <div className="w-5 h-5 rounded-full border-2 border-gray-300" />}
-                    {mintStep === 'confirming' && <Loader className="w-5 h-5 text-blue-600 animate-spin" />}
-                    {mintStep === 'complete' && <CheckCircle className="w-5 h-5 text-green-600" />}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-black">Awaiting Mint Confirmation</p>
-                    <p className="text-sm text-gray-600">Confirming your transaction on-chain</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Success */}
-              {mintStep === 'complete' && (
-                <motion.div className="p-4 bg-green-50 rounded-lg text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <p className="text-green-700 font-semibold mb-2">NFT Successfully Minted!</p>
-                  <p className="text-sm text-green-600">Your authenticity badge is now on the blockchain</p>
-                </motion.div>
-              )}
-
-              {mintStep === 'complete' && (
-                <button
-                  onClick={() => setShowMintModal(false)}
-                  className="w-full py-3 bg-black text-white font-semibold rounded-lg hover:bg-black/90 transition"
-                >
-                  Done
-                </button>
-              )}
             </motion.div>
           </motion.div>
         )}
