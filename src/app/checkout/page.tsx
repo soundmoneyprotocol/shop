@@ -38,10 +38,10 @@ export default function Checkout() {
     return (
       <main className="min-h-screen bg-dark py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
-          <div className="card text-center py-16">
-            <ShoppingBag className="w-16 h-16 mx-auto text-slate-400 mb-4" />
+          <div className="card border-2 border-black text-center py-16">
+            <ShoppingBag className="w-16 h-16 mx-auto text-black mb-4" />
             <h1 className="text-2xl font-bold mb-4">Your Cart is Empty</h1>
-            <p className="text-slate-400 mb-8">Add some products to get started</p>
+            <p className="text-black mb-8">Add some products to get started</p>
             <Link href="/marketplace" className="btn-primary inline-block">
               Continue Shopping
             </Link>
