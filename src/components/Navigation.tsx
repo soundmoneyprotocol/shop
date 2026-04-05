@@ -151,16 +151,16 @@ export default function Navigation() {
               About Us
             </Link>
             <Link
-              href="/seller/dashboard"
-              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
-            >
-              Sell on SoundMoney
-            </Link>
-            <Link
               href="/marketplace"
               className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
             >
               Browse Products
+            </Link>
+            <Link
+              href="/seller/dashboard"
+              className="block px-4 py-2 text-gray-700 hover:text-black hover:bg-gray-100 transition"
+            >
+              Sell on SoundMoney
             </Link>
             {!isConnected && (
               <button
