@@ -119,7 +119,7 @@ export default function About() {
             <p className="text-gray-700 text-lg leading-relaxed">
               SoundMoney is building an authentic marketplace where artists own their success. We eliminate middlemen,
               maximize artist earnings, and create a trusted platform for buying, selling, and trading artist merchandise.
-              Every transaction is verified and secure. Every artist is authenticated. Every sale is fair.
+              Every transaction is verified and secure. Every artist is authenticated. Every sale is fair. Price Discovery agentic x402 payments.
             </p>
           </motion.div>
         </motion.div>
