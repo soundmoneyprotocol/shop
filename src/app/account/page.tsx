@@ -125,6 +125,10 @@ export default function AccountPage() {
               <p className="text-sm sm:text-base text-gray-600">{MOCK_USER.name}</p>
             </div>
             <div className="flex gap-2">
+              <Link href="/deposit" className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 transition">
+                <ArrowDown size={16} />
+                Deposit
+              </Link>
               <Link
                 href="/seller/settings"
                 className="flex items-center gap-2 px-4 py-2 border-2 border-black rounded-lg text-sm hover:bg-black/5 transition"
