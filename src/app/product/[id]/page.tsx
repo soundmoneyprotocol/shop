@@ -325,7 +325,7 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
               <div>
                 <h3 className="text-xl font-bold mb-4">Item Details</h3>
                 <div className="grid grid-cols-2 gap-6">
-                  {Object.entries(product.details).map(([key, value]) => (
+                  {Object.entries(product.details).map(([key, value]: [string, any]) => (
                     <div key={key}>
                       <p className="text-slate-400 text-sm mb-1">{key.charAt(0).toUpperCase() + key.slice(1)}</p>
                       <p className="font-semibold">{value}</p>
