@@ -15,10 +15,9 @@ const https = require('https');
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const BUCKET_NAME = 'shoe-images';
-const SOURCE_DIR = path.join(
-  __dirname,
-  '../../sneakercredinc/SneakrCred_Master/images/images/factory'
-);
+const SOURCE_DIR =
+  process.env.SHOE_LAYERS_DIR ||
+  path.join(__dirname, '../../sneakercredinc/SneakrCred_Master/images/images/factory');
 
 // Layer mappings
 const LAYERS = {
